@@ -1,0 +1,15 @@
+Lata
+Caja de carton
+Caja de plastico
+Caja de madera
+Bolsa de plastico
+Bolsa de papel
+Botella de plastico
+Botella de cristal
+Rollo
+Paquete
+Cilindro
+Barras
+Cajetilla
+Bote
+Pliego

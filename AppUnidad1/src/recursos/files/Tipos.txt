@@ -1,0 +1,13 @@
+Alimentos
+Bebidas
+Farmaceuticos
+Frituras
+Licores
+Detergentes
+Aseo personal
+Desechables
+Productos de limpieza
+Lacteos
+Enlatados
+Embutidos
+Papeleria
