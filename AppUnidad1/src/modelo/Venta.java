@@ -1,5 +1,6 @@
 package modelo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,13 +8,13 @@ public class Venta {
 	private static int gen = 0;
 	private int folio;
 	private ArrayList<UniVenta> lista;
-	private Date fecha;
+	private LocalDate fecha;
 	public Venta(int folio, ArrayList<UniVenta> lista, Date fecha) {
 		super();
 		this.folio = gen;
 		count();
 		this.lista = lista;
-		this.fecha = fecha;
+		this.fecha = LocalDate.now();
 	}
 	
 	private void count() {
@@ -44,11 +45,11 @@ public class Venta {
 		this.lista = lista;
 	}
 
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 	

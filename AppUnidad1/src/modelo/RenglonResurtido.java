@@ -1,20 +1,21 @@
 package modelo;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class RenglonResurtido {
 	private String codigoBarra;
 	private int cantidad;
 	private float precio;
-	private Date fechaCad;
+	private LocalDate fechaCad;
 	
 	
-	public RenglonResurtido(String codigoBarra, int cantidad, float precio, Date fechaCad) {
+	public RenglonResurtido(String codigoBarra, int cantidad, float precio) {
 		super();
 		this.codigoBarra = codigoBarra;
 		this.cantidad = cantidad;
 		this.precio = precio;
-		this.fechaCad = fechaCad;
+		this.fechaCad = LocalDate.now();
 	}
 	public String getCodigoBarra() {
 		return codigoBarra;
@@ -38,5 +39,12 @@ public class RenglonResurtido {
 	public float getPrecioTotal() {
 		return precio * cantidad;
 	}
+	public LocalDate getFechaCad() {
+		return fechaCad;
+	}
+	public void setFechaCad(LocalDate fechaCad) {
+		this.fechaCad = fechaCad;
+	}
+	
 
 }

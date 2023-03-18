@@ -1,5 +1,6 @@
 package modelo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,14 +8,14 @@ public class Resurtido {
 	private static int gen = 0;
 	private int folio;
 	private ArrayList<RenglonResurtido> articulos;
-	private Date fecha;
+	private LocalDate fecha;
 	private String proveedor;
-	public Resurtido(ArrayList<RenglonResurtido> articulos, Date fecha, String proveedor) {
+	public Resurtido(ArrayList<RenglonResurtido> articulos, String proveedor) {
 		super();
 		this.folio = gen;
 		count();
 		this.articulos = articulos;
-		this.fecha = fecha;
+		this.fecha = LocalDate.now();
 		this.proveedor = proveedor;
 	}
 	private static void count() {
@@ -39,10 +40,10 @@ public class Resurtido {
 	public void setArticulos(ArrayList<RenglonResurtido> articulos) {
 		this.articulos = articulos;
 	}
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 	public String getProveedor() {
