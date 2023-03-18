@@ -18,6 +18,7 @@ public class Resurtido {
 		this.proveedor = proveedor;
 	}
 	private static void count() {
+		//usado para generar folios
 		gen++;
 	}
 	public static int getGen() {
@@ -51,6 +52,7 @@ public class Resurtido {
 		this.proveedor = proveedor;
 	}
 	public float getTotal() {
+		//retorna el total de todo el resurtido
 		float total = 0;
 		for(RenglonResurtido dual: articulos) {
 			total += dual.getPrecioTotal();

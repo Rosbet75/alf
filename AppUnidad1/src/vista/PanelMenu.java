@@ -14,14 +14,19 @@ public class PanelMenu extends JPanel {
 	private JButton botonModificar;
 	private JButton botonEliminar;
 	private JButton botonListar;
-
+	private JButton botonResurtir;
+	
 	public PanelMenu() {
 		setBackground(new Color(128, 128, 192));
-		setLayout(new GridLayout(5, 1, 0, 0));
+		setLayout(new GridLayout(6, 1, 0, 0));
 
 		botonRegistrar = new JButton("Registrar");
 		botonRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		add(botonRegistrar);
+		
+		botonResurtir = new JButton("Resurtir");
+		botonResurtir.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		add(botonResurtir);
 
 		botonConsultar = new JButton("Consultar");
 		botonConsultar.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -61,4 +66,13 @@ public class PanelMenu extends JPanel {
 		return botonListar;
 	}
 
+	public JButton getBotonResurtir() {
+		return botonResurtir;
+	}
+
+	public void setBotonResurtir(JButton botonResurtir) {
+		this.botonResurtir = botonResurtir;
+	}
+
+	
 }

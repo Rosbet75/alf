@@ -2,13 +2,16 @@ package vista;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class PanelEncabezado extends JPanel {
+	private ImageIcon bgImage;
 
 	public PanelEncabezado(String titulo, String subtitulo) {
 		setLayout(new GridLayout(2, 1, 0, 0));
@@ -24,7 +27,8 @@ public class PanelEncabezado extends JPanel {
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblNewLabel_1);
-
+		
 	}
+	
 
 }
