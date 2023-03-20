@@ -38,6 +38,7 @@ public class VentanaPrincipal extends JFrame {
 	private JButton botonModificar;
 	private JButton botonEliminar;
 	private JButton botonListar;
+	private JButton botonResurtir;
 
 	// PanelOpciones
 	private JButton botonContinuar;
@@ -48,6 +49,7 @@ public class VentanaPrincipal extends JFrame {
 	private PanelEncabezado panelEncabezado;
 	private PanelOpciones panelOpciones;
 	private PanelCapturaProductos panelCapturaProductos;
+	private PanelResurtido panelResurtido;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -109,6 +111,17 @@ public class VentanaPrincipal extends JFrame {
 					contentPane.add(panelOpciones, BorderLayout.SOUTH);
 					setVisible(true);
 
+				});
+				botonResurtir = panelMenu.getBotonResurtir();
+				botonResurtir.addActionListener(s -> {
+					panelEncabezado = new PanelEncabezado("Resurtir Productos", "El producto se sumara al inventario");
+					panelResurtido = new PanelResurtido();
+					panelOpciones = new PanelOpciones();
+					
+					contentPane.add(panelEncabezado, BorderLayout.NORTH);
+					contentPane.add(panelResurtido, BorderLayout.CENTER);
+					contentPane.add(panelOpciones, BorderLayout.SOUTH);
+					setVisible(true);
 				});
 
 //				botonConsultar = panelMenu.getBotonConsultar();
