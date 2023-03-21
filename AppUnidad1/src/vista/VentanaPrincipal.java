@@ -39,7 +39,7 @@ public class VentanaPrincipal extends JFrame {
 	private JButton botonEliminar;
 	private JButton botonListar;
 	private JButton botonResurtir;
-
+	private JButton botonVenta;
 	// PanelOpciones
 	private JButton botonContinuar;
 	private JButton botonAceptar;
@@ -50,7 +50,8 @@ public class VentanaPrincipal extends JFrame {
 	private PanelOpciones panelOpciones;
 	private PanelCapturaProductos panelCapturaProductos;
 	private PanelResurtido panelResurtido;
-
+	private PanelVenta panelVenta;
+	private VentanaConsulta panelConsultar;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -124,7 +125,28 @@ public class VentanaPrincipal extends JFrame {
 					setVisible(true);
 				});
 
-//				botonConsultar = panelMenu.getBotonConsultar();
+				botonVenta = panelMenu.getBotonVenta();
+				botonVenta.addActionListener(s -> {
+					panelEncabezado = new PanelEncabezado("Vender Productos", "El producto se sumara al inventario");
+					panelVenta = new PanelVenta();
+					panelOpciones = new PanelOpciones();
+					
+					contentPane.add(panelEncabezado, BorderLayout.NORTH);
+					contentPane.add(panelVenta, BorderLayout.CENTER);
+					contentPane.add(panelOpciones, BorderLayout.SOUTH);
+					setVisible(true);
+				});
+				botonConsultar = panelMenu.getBotonConsultar();
+				botonConsultar.addActionListener(s -> {
+					panelEncabezado = new PanelEncabezado("Consultar Productos", "El producto se mostrara en pantalla");
+					panelConsultar = new VentanaConsulta();
+					panelOpciones = new PanelOpciones();
+					
+					contentPane.add(panelEncabezado, BorderLayout.NORTH);
+					contentPane.add(panelConsultar, BorderLayout.CENTER);
+					contentPane.add(panelOpciones, BorderLayout.SOUTH);
+					setVisible(true);
+				});
 //				botonModificar = panelMenu.getBotonModificar();
 //				botonEliminar = panelMenu.getBotonEliminar();
 				botonListar = panelMenu.getBotonListar();
@@ -133,6 +155,7 @@ public class VentanaPrincipal extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 
 						// TODO anadir argumento al constructor
+						contentPane.add(new PanelEncabezado("Listar Productos", "Listado de todos los productos registrados"), BorderLayout.NORTH);
 						contentPane.add(new VistaTabla(listaProductos), BorderLayout.CENTER);
 						setVisible(true);
 					}

@@ -15,10 +15,11 @@ public class PanelMenu extends JPanel {
 	private JButton botonEliminar;
 	private JButton botonListar;
 	private JButton botonResurtir;
+	private JButton botonVenta;
 	
 	public PanelMenu() {
 		setBackground(new Color(128, 128, 192));
-		setLayout(new GridLayout(6, 1, 0, 0));
+		setLayout(new GridLayout(7, 1, 0, 0));
 
 		botonRegistrar = new JButton("Registrar");
 		botonRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -28,6 +29,10 @@ public class PanelMenu extends JPanel {
 		botonResurtir.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		add(botonResurtir);
 
+		botonVenta = new JButton("Vender");
+		botonVenta.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		add(botonVenta);
+		
 		botonConsultar = new JButton("Consultar");
 		botonConsultar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		add(botonConsultar);
@@ -74,5 +79,14 @@ public class PanelMenu extends JPanel {
 		this.botonResurtir = botonResurtir;
 	}
 
+	public JButton getBotonVenta() {
+		return botonVenta;
+	}
+
+	public void setBotonVenta(JButton botonVenta) {
+		this.botonVenta = botonVenta;
+	}
+
+	
 	
 }
