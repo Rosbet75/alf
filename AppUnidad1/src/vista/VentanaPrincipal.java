@@ -139,7 +139,7 @@ public class VentanaPrincipal extends JFrame {
 				});
 				botonModificar = panelMenu.getBotonModificar();
 				botonModificar.addActionListener(s -> {
-					panelEncabezado = new PanelEncabezado("Vender Productos", "El producto se sumara al inventario");
+					panelEncabezado = new PanelEncabezado("Modificar Productos", "Modifica las caracteristicas de un producto");
 					panelModificar = new VentanaModificar();
 					panelOpciones = new PanelOpciones();
 					

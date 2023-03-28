@@ -21,6 +21,9 @@ public class PanelResurtido extends JPanel {
 	private JTextField textField;
 	private JTable table;
 	private JTable table_1;
+	private JCheckBox chckbxBusquedaPorCodigo;
+	private JSpinner spinner;
+	private JButton btnAgregarAlCarrito;
 
 	/**
 	 * Create the panel.
@@ -40,7 +43,7 @@ public class PanelResurtido extends JPanel {
 		gbc_lblNombreDeProducto.gridy = 0;
 		add(lblNombreDeProducto, gbc_lblNombreDeProducto);
 		
-		JCheckBox chckbxBusquedaPorCodigo = new JCheckBox("Busqueda por codigo");
+		chckbxBusquedaPorCodigo = new JCheckBox("Busqueda por codigo");
 		GridBagConstraints gbc_chckbxBusquedaPorCodigo = new GridBagConstraints();
 		gbc_chckbxBusquedaPorCodigo.insets = new Insets(0, 0, 5, 0);
 		gbc_chckbxBusquedaPorCodigo.gridx = 4;
@@ -63,7 +66,7 @@ public class PanelResurtido extends JPanel {
 		gbc_lblProductosDisponibles.gridy = 1;
 		add(lblProductosDisponibles, gbc_lblProductosDisponibles);
 		
-		JSpinner spinner = new JSpinner();
+		spinner = new JSpinner();
 		GridBagConstraints gbc_spinner = new GridBagConstraints();
 		gbc_spinner.insets = new Insets(0, 0, 5, 5);
 		gbc_spinner.gridx = 2;
@@ -110,7 +113,7 @@ public class PanelResurtido extends JPanel {
 		gbc_table_1.gridy = 4;
 		add(table_1, gbc_table_1);
 		
-		JButton btnAgregarAlCarrito = new JButton("Agregar al carrito");
+		btnAgregarAlCarrito = new JButton("Agregar al carrito");
 		GridBagConstraints gbc_btnAgregarAlCarrito = new GridBagConstraints();
 		gbc_btnAgregarAlCarrito.insets = new Insets(0, 0, 0, 5);
 		gbc_btnAgregarAlCarrito.gridx = 2;
