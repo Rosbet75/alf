@@ -52,6 +52,7 @@ public class VentanaPrincipal extends JFrame {
 	private PanelResurtido panelResurtido;
 	private PanelVenta panelVenta;
 	private VentanaConsulta panelConsultar;
+	private VentanaModificar panelModificar;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -67,7 +68,7 @@ public class VentanaPrincipal extends JFrame {
 
 	public VentanaPrincipal() {
 
-		cambiarApariencia("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		//cambiarApariencia("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
 		// TODO no hacer esto
 		List<Producto> listaProductos = new ArrayList<>();
@@ -133,6 +134,17 @@ public class VentanaPrincipal extends JFrame {
 					
 					contentPane.add(panelEncabezado, BorderLayout.NORTH);
 					contentPane.add(panelVenta, BorderLayout.CENTER);
+					contentPane.add(panelOpciones, BorderLayout.SOUTH);
+					setVisible(true);
+				});
+				botonModificar = panelMenu.getBotonModificar();
+				botonModificar.addActionListener(s -> {
+					panelEncabezado = new PanelEncabezado("Vender Productos", "El producto se sumara al inventario");
+					panelModificar = new VentanaModificar();
+					panelOpciones = new PanelOpciones();
+					
+					contentPane.add(panelEncabezado, BorderLayout.NORTH);
+					contentPane.add(panelModificar, BorderLayout.CENTER);
 					contentPane.add(panelOpciones, BorderLayout.SOUTH);
 					setVisible(true);
 				});

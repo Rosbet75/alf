@@ -16,6 +16,28 @@ public class Producto {
 	private int stockMaximo; // TODO este atributo no representa al producto
 	private int stockMinimo; // TODO este atributo no representa al producto
 
+	public Producto() {
+		
+	}
+	
+	public Producto(String codigoBarras, String nombre, String marca, String presentacion, int cantidad,
+			String contenido, String unidadMedida, String categoria, double precioVenta, String descripcion,
+			int stockMaximo, int stockMinimo) {
+		super();
+		this.codigoBarras = codigoBarras;
+		this.nombre = nombre;
+		this.marca = marca;
+		this.presentacion = presentacion;
+		this.cantidad = cantidad;
+		this.contenido = contenido;
+		this.unidadMedida = unidadMedida;
+		this.categoria = categoria;
+		this.precioVenta = precioVenta;
+		this.descripcion = descripcion;
+		this.stockMaximo = stockMaximo;
+		this.stockMinimo = stockMinimo;
+	}
+
 	public String getCodigoBarras() {
 		return codigoBarras;
 	}

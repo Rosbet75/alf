@@ -11,6 +11,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import modelo.Producto;
+
 // Guardar las DESCRIPCIONES en la clase CATALOGO
 public class PanelCapturaProductos extends JPanel {
 	private JTextField txt_codigoBarras;
@@ -164,5 +166,23 @@ public class PanelCapturaProductos extends JPanel {
 		pan_7.add(sp_stockMin);
 
 	}
+	public Producto getProducto() {
+		String codigoBarras = txt_codigoBarras.getText();
+		String nombre = txt_nombre.getText();
+		String marca =(String) cb_marca.getSelectedItem();
+		String presentacion = (String) cb_presentacion.getSelectedItem();
+		int cantidad = Integer.parseInt(sp_cantidad.getValue().toString());
+		String contenido = sp_contenido.getValue().toString();
+		String unidadMedida = cb_unidadMedida.getSelectedItem().toString();
+		String categoria = cb_categoria.getSelectedItem().toString();
+		double precioVenta = Double.parseDouble(sp_precioVenta.getValue().toString());
+		String descripcion = txt_descripcion.getText();
+		int stockMaximo = Integer.parseInt(sp_stockMax.getValue().toString());
+		int stockMinimo = Integer.parseInt(sp_stockMin.getValue().toString());
+		
+		return new Producto(codigoBarras, nombre, marca, presentacion, cantidad, contenido, unidadMedida, categoria, precioVenta,descripcion,stockMaximo, stockMinimo);
+				
+	}
+	
 
 }
