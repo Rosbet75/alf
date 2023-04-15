@@ -9,6 +9,9 @@ public class Venta {
 	private int folio;
 	private ArrayList<UniVenta> lista;
 	private LocalDate fecha;
+	public Venta() {
+		
+	}
 	public Venta(int folio, ArrayList<UniVenta> lista, Date fecha) {
 		super();
 		this.folio = gen;

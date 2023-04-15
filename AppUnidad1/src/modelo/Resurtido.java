@@ -10,6 +10,9 @@ public class Resurtido {
 	private ArrayList<RenglonResurtido> articulos;
 	private LocalDate fecha;
 	private String proveedor;
+	public Resurtido() {
+		
+	}
 	public Resurtido(ArrayList<RenglonResurtido> articulos, String proveedor) {
 		super();
 		this.folio = gen;

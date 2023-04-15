@@ -15,7 +15,7 @@ public class Producto {
 	private String descripcion;
 	private int stockMaximo; // TODO este atributo no representa al producto
 	private int stockMinimo; // TODO este atributo no representa al producto
-
+	
 	public Producto() {
 		
 	}
@@ -133,5 +133,5 @@ public class Producto {
 	public void setStockMinimo(int stockMinimo) {
 		this.stockMinimo = stockMinimo;
 	}
-
+	
 }

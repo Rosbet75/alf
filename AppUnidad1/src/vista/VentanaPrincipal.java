@@ -19,6 +19,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 import modelo.Producto;
+import modelo.Resurtido;
+import modelo.Venta;
 
 // TODO anadir flags para evitar poner un panel sobre otro
 // TODO reacomodar los atributos de esta clase
@@ -76,6 +78,16 @@ public class VentanaPrincipal extends JFrame {
 		listaProductos.add(new Producto());
 		listaProductos.add(new Producto());
 
+		List<Resurtido> listaResurtido = new ArrayList<>();
+		listaResurtido.add(new Resurtido());
+		listaResurtido.add(new Resurtido());
+		listaResurtido.add(new Resurtido());
+
+		List<Venta> listaVenta = new ArrayList<>();
+		listaVenta.add(new Venta());
+		listaVenta.add(new Venta());
+		listaVenta.add(new Venta());
+		
 		setTitle("App GUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(MAXIMIZED_BOTH);
@@ -117,7 +129,7 @@ public class VentanaPrincipal extends JFrame {
 				botonResurtir = panelMenu.getBotonResurtir();
 				botonResurtir.addActionListener(s -> {
 					panelEncabezado = new PanelEncabezado("Resurtir Productos", "El producto se sumara al inventario");
-					panelResurtido = new PanelResurtido();
+					panelResurtido = new PanelResurtido(listaProductos);
 					panelOpciones = new PanelOpciones();
 					
 					contentPane.add(panelEncabezado, BorderLayout.NORTH);

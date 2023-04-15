@@ -20,6 +20,9 @@ public class PanelVenta extends JPanel {
 	private JTextField busquedaField;
 	private JTable table;
 	private JTable table_1;
+	private JCheckBox chckbxBusquedaPorCodigo;
+	private JSpinner spinner;
+	private JButton btnAgregarAlCarrito;
 
 	/**
 	 * Create the panel.
@@ -27,7 +30,7 @@ public class PanelVenta extends JPanel {
 	public PanelVenta() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[] {0, 0, 0, 0, 80, 0, 0};
+		gridBagLayout.rowHeights = new int[] {0, 0, 89, 0, 80, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
@@ -39,7 +42,7 @@ public class PanelVenta extends JPanel {
 		gbc_lblNombreDeProducto.gridy = 0;
 		add(lblNombreDeProducto, gbc_lblNombreDeProducto);
 		
-		JCheckBox chckbxBusquedaPorCodigo = new JCheckBox("Busqueda por codigo");
+		chckbxBusquedaPorCodigo = new JCheckBox("Busqueda por codigo");
 		GridBagConstraints gbc_chckbxBusquedaPorCodigo = new GridBagConstraints();
 		gbc_chckbxBusquedaPorCodigo.insets = new Insets(0, 0, 5, 0);
 		gbc_chckbxBusquedaPorCodigo.gridx = 4;
@@ -62,7 +65,7 @@ public class PanelVenta extends JPanel {
 		gbc_lblProductosDisponibles.gridy = 1;
 		add(lblProductosDisponibles, gbc_lblProductosDisponibles);
 		
-		JSpinner spinner = new JSpinner();
+		spinner = new JSpinner();
 		GridBagConstraints gbc_spinner = new GridBagConstraints();
 		gbc_spinner.insets = new Insets(0, 0, 5, 5);
 		gbc_spinner.gridx = 2;
@@ -84,7 +87,7 @@ public class PanelVenta extends JPanel {
 		gbc_lblProductosEnSeleccion.gridy = 3;
 		add(lblProductosEnSeleccion, gbc_lblProductosEnSeleccion);
 		
-		JButton btnAgregarAlCarrito = new JButton("Agregar al carrito");
+		btnAgregarAlCarrito = new JButton("Agregar al carrito");
 		GridBagConstraints gbc_btnAgregarAlCarrito = new GridBagConstraints();
 		gbc_btnAgregarAlCarrito.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAgregarAlCarrito.gridx = 2;
