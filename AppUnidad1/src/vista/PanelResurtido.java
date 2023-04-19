@@ -24,22 +24,22 @@ import java.awt.event.ActionEvent;
 
 public class PanelResurtido extends JPanel {
 	private JTextField busquedaField;
-	private JTextField textField;
 	private JCheckBox chckbxBusquedaPorCodigo;
-	private JSpinner spinner;
+	private JSpinner sp_cantidad;
 	private JButton btnAgregarAlCarrito;
 
 	//===========
 	private ArrayList<RenglonResurtido> renglonresurtido;
 
-	private JTable table_1;
-	private JScrollPane scrollPane_1;
-	private JTable table;
-	private JScrollPane scrollPane;
+	private JTable tabla_seleccion;
+	private JScrollPane scroll_seleccion;
+	private JTable tablaProductos;
+	private JScrollPane scroll_productos;
 	private List<Producto> listaProductos;
 	private int totalProductos;
 	//private JTable tabla;
 	private ModeloTabla modeloTabla;
+	private JSpinner sp_precio;
 
 	/**
 	 * Create the panel.
@@ -85,23 +85,23 @@ public class PanelResurtido extends JPanel {
 		gbc_lblProductosDisponibles.gridy = 1;
 		add(lblProductosDisponibles, gbc_lblProductosDisponibles);
 
-		spinner = new JSpinner();
-		GridBagConstraints gbc_spinner = new GridBagConstraints();
-		gbc_spinner.insets = new Insets(0, 0, 5, 5);
-		gbc_spinner.gridx = 0;
-		gbc_spinner.gridy = 2;
-		add(spinner, gbc_spinner);
+		sp_cantidad = new JSpinner();
+		GridBagConstraints gbc_sp_cantidad = new GridBagConstraints();
+		gbc_sp_cantidad.insets = new Insets(0, 0, 5, 5);
+		gbc_sp_cantidad.gridx = 0;
+		gbc_sp_cantidad.gridy = 2;
+		add(sp_cantidad, gbc_sp_cantidad);
 
-		scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane.gridx = 1;
-		gbc_scrollPane.gridy = 2;
-		add(scrollPane, gbc_scrollPane);
+		scroll_productos = new JScrollPane();
+		GridBagConstraints gbc_scroll_productos = new GridBagConstraints();
+		gbc_scroll_productos.fill = GridBagConstraints.BOTH;
+		gbc_scroll_productos.insets = new Insets(0, 0, 5, 0);
+		gbc_scroll_productos.gridx = 1;
+		gbc_scroll_productos.gridy = 2;
+		add(scroll_productos, gbc_scroll_productos);
 
-		table = new JTable(modeloTabla);
-		scrollPane.setViewportView(table);
+		tablaProductos = new JTable(modeloTabla);
+		scroll_productos.setViewportView(tablaProductos);
 
 		JLabel lblPrecio = new JLabel("Precio");
 		GridBagConstraints gbc_lblPrecio = new GridBagConstraints();
@@ -116,33 +116,33 @@ public class PanelResurtido extends JPanel {
 		gbc_lblProductosEnSeleccion.gridx = 1;
 		gbc_lblProductosEnSeleccion.gridy = 3;
 		add(lblProductosEnSeleccion, gbc_lblProductosEnSeleccion);
+		
+		sp_precio = new JSpinner();
+		GridBagConstraints gbc_sp_precio = new GridBagConstraints();
+		gbc_sp_precio.insets = new Insets(0, 0, 5, 5);
+		gbc_sp_precio.gridx = 0;
+		gbc_sp_precio.gridy = 4;
+		add(sp_precio, gbc_sp_precio);
 
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.anchor = GridBagConstraints.NORTH;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 4;
-		add(textField, gbc_textField);
-		textField.setColumns(10);
+		scroll_seleccion = new JScrollPane();
+		GridBagConstraints gbc_scroll_seleccion = new GridBagConstraints();
+		gbc_scroll_seleccion.fill = GridBagConstraints.BOTH;
+		gbc_scroll_seleccion.insets = new Insets(0, 0, 5, 0);
+		gbc_scroll_seleccion.gridx = 1;
+		gbc_scroll_seleccion.gridy = 4;
+		add(scroll_seleccion, gbc_scroll_seleccion);
 
-		scrollPane_1 = new JScrollPane();
-		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
-		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane_1.gridx = 1;
-		gbc_scrollPane_1.gridy = 4;
-		add(scrollPane_1, gbc_scrollPane_1);
-
-		table_1 = new JTable();
-		scrollPane_1.setViewportView(table_1);
+		tabla_seleccion = new JTable();
+		scroll_seleccion.setViewportView(tabla_seleccion);
 
 		btnAgregarAlCarrito = new JButton("Agregar al carrito");
 		btnAgregarAlCarrito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(Integer.parseInt(spinner.getValue().toString()) != 0) {
-					
+				if(Integer.parseInt(sp_cantidad.getValue().toString()) != 0) {
+					listaProductos.add(new Producto());
+					modeloTabla = new ModeloTabla();
+					tablaProductos = new JTable(modeloTabla);
+					scroll_productos.setViewportView(tablaProductos);
 				}
 			}
 		});

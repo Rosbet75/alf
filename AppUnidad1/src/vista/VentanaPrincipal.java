@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -74,9 +75,10 @@ public class VentanaPrincipal extends JFrame {
 
 		// TODO no hacer esto
 		List<Producto> listaProductos = new ArrayList<>();
-		listaProductos.add(new Producto());
-		listaProductos.add(new Producto());
-		listaProductos.add(new Producto());
+		//		listaProductos.add(new Producto());
+		//		listaProductos.add(new Producto());
+		//		listaProductos.add(new Producto());
+		listaProductos.add(new Producto("1","asdf","adsfasdf", "asdfdsa",13, "asdfafe","adsfasdf","adsfasdf",34.55,"asdfeasdf",3434,2455555));
 
 		List<Resurtido> listaResurtido = new ArrayList<>();
 		listaResurtido.add(new Resurtido());
@@ -87,7 +89,7 @@ public class VentanaPrincipal extends JFrame {
 		listaVenta.add(new Venta());
 		listaVenta.add(new Venta());
 		listaVenta.add(new Venta());
-		
+
 		setTitle("App GUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(MAXIMIZED_BOTH);
@@ -119,7 +121,18 @@ public class VentanaPrincipal extends JFrame {
 							"El producto se anexara al catalogo.");
 					panelCapturaProductos = new PanelCapturaProductos();
 					panelOpciones = new PanelOpciones();
+					JButton aceptar = panelOpciones.getBotonAceptar();
+					JButton cancelar = panelOpciones.getBotonCancelar();
+					panelOpciones.getBotonContinuar().setVisible(false);
+					aceptar.addActionListener(t -> {
+						listaProductos.add(panelCapturaProductos.getProducto());
+						panelCapturaProductos.clear();
 
+					});
+					cancelar.addActionListener(g -> {
+						
+						
+					});
 					contentPane.add(panelEncabezado, BorderLayout.NORTH);
 					contentPane.add(panelCapturaProductos, BorderLayout.CENTER);
 					contentPane.add(panelOpciones, BorderLayout.SOUTH);
@@ -131,7 +144,7 @@ public class VentanaPrincipal extends JFrame {
 					panelEncabezado = new PanelEncabezado("Resurtir Productos", "El producto se sumara al inventario");
 					panelResurtido = new PanelResurtido(listaProductos);
 					panelOpciones = new PanelOpciones();
-					
+
 					contentPane.add(panelEncabezado, BorderLayout.NORTH);
 					contentPane.add(panelResurtido, BorderLayout.CENTER);
 					contentPane.add(panelOpciones, BorderLayout.SOUTH);
@@ -143,7 +156,7 @@ public class VentanaPrincipal extends JFrame {
 					panelEncabezado = new PanelEncabezado("Vender Productos", "El producto se sumara al inventario");
 					panelVenta = new PanelVenta();
 					panelOpciones = new PanelOpciones();
-					
+
 					contentPane.add(panelEncabezado, BorderLayout.NORTH);
 					contentPane.add(panelVenta, BorderLayout.CENTER);
 					contentPane.add(panelOpciones, BorderLayout.SOUTH);
@@ -151,28 +164,66 @@ public class VentanaPrincipal extends JFrame {
 				});
 				botonModificar = panelMenu.getBotonModificar();
 				botonModificar.addActionListener(s -> {
-					panelEncabezado = new PanelEncabezado("Modificar Productos", "Modifica las caracteristicas de un producto");
-					panelModificar = new VentanaModificar();
-					panelOpciones = new PanelOpciones();
-					
-					contentPane.add(panelEncabezado, BorderLayout.NORTH);
-					contentPane.add(panelModificar, BorderLayout.CENTER);
-					contentPane.add(panelOpciones, BorderLayout.SOUTH);
-					setVisible(true);
+					if(!listaProductos.isEmpty()) {
+						panelEncabezado = new PanelEncabezado("Modificar Productos", "Modifica las caracteristicas de un producto");
+						panelModificar = new VentanaModificar();
+						var buscar = panelModificar.getBuscar();
+						buscar.addActionListener(b -> {
+							String cod = panelModificar.getBusqueda().getText().trim();
+							for(int i = 0; i<listaProductos.size(); i++) {
+								if(listaProductos.get(i).getCodigoBarras().equals(cod)) {
+									panelModificar.setProducto(listaProductos.get(i));
+								}
+							}
+						});
+						panelOpciones = new PanelOpciones();
+						var cancelar = panelOpciones.getBotonAceptar();
+						var aceptar = panelOpciones.getBotonCancelar();
+						aceptar.addActionListener(d -> {
+							String cod = panelModificar.getBusqueda().getText().trim();
+							for(int i = 0; i<listaProductos.size(); i++) {
+								if(listaProductos.get(i).getCodigoBarras().equals(cod)) {
+									listaProductos.add(i, panelModificar.getProducto());
+								}
+							}
+						});
+						panelOpciones.getBotonContinuar().setVisible(false);
+						cancelar.addActionListener(h -> {
+
+						});
+						aceptar.addActionListener(t -> {
+
+						});
+						contentPane.add(panelEncabezado, BorderLayout.NORTH);
+						contentPane.add(panelModificar, BorderLayout.CENTER);
+						contentPane.add(panelOpciones, BorderLayout.SOUTH);
+						setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(null, "la lista de productos esta vacia");
+					}
 				});
 				botonConsultar = panelMenu.getBotonConsultar();
 				botonConsultar.addActionListener(s -> {
 					panelEncabezado = new PanelEncabezado("Consultar Productos", "El producto se mostrara en pantalla");
 					panelConsultar = new VentanaConsulta();
 					panelOpciones = new PanelOpciones();
-					
+					JButton botonBuscar = panelConsultar.getBotonBuscar();
+					botonBuscar.addActionListener(d -> {
+						String codigo = panelConsultar.getBusqueda().getText();
+						for(Producto producto:listaProductos) {
+							if(producto.getCodigoBarras().equals(codigo)) {
+								panelConsultar.setConsulta(producto);
+								break;
+							}
+						}
+					});
 					contentPane.add(panelEncabezado, BorderLayout.NORTH);
 					contentPane.add(panelConsultar, BorderLayout.CENTER);
 					contentPane.add(panelOpciones, BorderLayout.SOUTH);
 					setVisible(true);
 				});
-//				botonModificar = panelMenu.getBotonModificar();
-//				botonEliminar = panelMenu.getBotonEliminar();
+				//				botonModificar = panelMenu.getBotonModificar();
+				//				botonEliminar = panelMenu.getBotonEliminar();
 				botonListar = panelMenu.getBotonListar();
 				botonListar.addActionListener(new ActionListener() {
 					@Override

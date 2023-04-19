@@ -2,6 +2,12 @@ package vista;
 
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -39,11 +45,20 @@ public class PanelCapturaProductos extends JPanel {
 		JLabel lbl_codigoBarras = new JLabel("Codigo de barras");
 		lbl_codigoBarras.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		pan_1.add(lbl_codigoBarras);
+		
 
 		txt_codigoBarras = new JTextField();
 		txt_codigoBarras.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		pan_1.add(txt_codigoBarras);
 		txt_codigoBarras.setColumns(10);
+		txt_codigoBarras.addKeyListener(new KeyAdapter() {
+			   public void keyTyped(KeyEvent e) {
+			      char c = e.getKeyChar();
+			      if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+			         e.consume();  // ignore event
+			      }
+			   }
+			});
 
 		JPanel pan_2 = new JPanel();
 		pan_2.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -164,6 +179,61 @@ public class PanelCapturaProductos extends JPanel {
 		sp_stockMin = new JSpinner();
 		sp_stockMin.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		pan_7.add(sp_stockMin);
+		
+		ArrayList<String> categorias = new ArrayList<>();
+		ArrayList<String> unidades = new ArrayList<>();
+		ArrayList<String> marcas = new ArrayList<>();
+		ArrayList<String> presentacion = new ArrayList<>();
+		File file = new File("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/Marcas.txt");
+		try {
+			Scanner scanner = new Scanner(file);
+			do {
+				cb_marca.addItem(scanner.nextLine().trim());
+				
+			}while(scanner.hasNext());
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		file = new File("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/Presentacion.txt");
+		try {
+			Scanner scanner = new Scanner(file);
+			do {
+				cb_presentacion.addItem(scanner.nextLine().trim());
+			} while(scanner.hasNext());
+			scanner.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		file = new File("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/Tipos.txt");
+		try {
+			Scanner scanner = new Scanner(file);
+			do {
+				cb_categoria.addItem(scanner.nextLine().trim());
+				
+			} while(scanner.hasNext());
+			scanner.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		file = new File("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/Unidadmedida.txt");
+		try {
+			Scanner scanner = new Scanner(file);
+			do {
+				cb_unidadMedida.addItem(scanner.nextLine().trim());
+			} while(scanner.hasNext());
+			scanner.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 	public Producto getProducto() {
@@ -182,6 +252,20 @@ public class PanelCapturaProductos extends JPanel {
 		
 		return new Producto(codigoBarras, nombre, marca, presentacion, cantidad, contenido, unidadMedida, categoria, precioVenta,descripcion,stockMaximo, stockMinimo);
 				
+	}
+	public void clear() {
+		txt_codigoBarras.setText("");
+		txt_nombre.setText("");
+		txt_descripcion.setText("");
+		cb_categoria.setSelectedIndex(0);
+		cb_marca.setSelectedIndex(0);
+		sp_cantidad.setValue(0);
+		sp_contenido.setValue(0);
+		cb_unidadMedida.setSelectedIndex(0);
+		cb_categoria.setSelectedIndex(0);
+		sp_precioVenta.setValue(0);
+		sp_stockMax.setValue(0);
+		sp_stockMin.setValue(0);
 	}
 	
 

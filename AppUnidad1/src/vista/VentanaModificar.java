@@ -1,33 +1,41 @@
 package vista;
 
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JCheckBox;
-import javax.swing.JTextField;
-import java.awt.Choice;
-import java.awt.Button;
-import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
+
+import modelo.Producto;
+
 public class VentanaModificar extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
+	private JTextField nombre;
+	private JTextField txt_descripcion;
+	private JButton buscar;
+	private JTextField busqueda;
+	private JComboBox cb_marca;
+	private JComboBox cb_presentacion;
+	private JSpinner sp_stockMin;
+	private JSpinner sp_stockMax;
+	private JComboBox cb_categoria;
+	private JSpinner sp_cantidad;
+	private JSpinner sp_contenido;
+	private JSpinner sp_precioVenta;
+	private JComboBox cb_unidadMedida;
 
 	/**
 	 * Create the panel.
@@ -119,15 +127,20 @@ public class VentanaModificar extends JPanel {
 		JLabel lblNewLabel = new JLabel("Producto ");
 		add(lblNewLabel, "2, 2, 45, 1");
 		
-		textField = new JTextField();
-		add(textField, "2, 4, 20, 1, fill, default");
-		textField.setColumns(10);
+		busqueda = new JTextField();
+		add(busqueda, "2, 4, 20, 1, fill, default");
+		busqueda.setColumns(10);
+		busqueda.addKeyListener(new KeyAdapter() {
+			   public void keyTyped(KeyEvent e) {
+			      char c = e.getKeyChar();
+			      if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+			         e.consume();  // ignore event
+			      }
+			   }
+			});
 		
-		JCheckBox chckbxBusquedaPorCodigo = new JCheckBox("Busqueda por Codigo");
-		add(chckbxBusquedaPorCodigo, "30, 4, 13, 1");
-		
-		JButton btnNewButton = new JButton("Buscar");
-		add(btnNewButton, "4, 6, 15, 1");
+		buscar = new JButton("Buscar");
+		add(buscar, "4, 6, 15, 1");
 		
 		JSeparator separator = new JSeparator();
 		add(separator, "2, 8, 44, 1");
@@ -142,13 +155,12 @@ public class VentanaModificar extends JPanel {
 		separator_1.setOrientation(SwingConstants.VERTICAL);
 		add(separator_1, "26, 10, 1, 23");
 		
-		textField_1 = new JTextField();
-		add(textField_1, "4, 12, 9, 1, fill, default");
-		textField_1.setColumns(10);
+		nombre = new JTextField();
+		add(nombre, "4, 12, 9, 1, fill, default");
+		nombre.setColumns(10);
 		
-		textField_7 = new JTextField();
-		add(textField_7, "14, 12, 9, 1, fill, default");
-		textField_7.setColumns(10);
+		cb_categoria = new JComboBox();
+		add(cb_categoria, "14, 12, 9, 1, fill, default");
 		
 		JLabel lblMarca = new JLabel("Marca");
 		add(lblMarca, "4, 14, 9, 1");
@@ -156,13 +168,11 @@ public class VentanaModificar extends JPanel {
 		JLabel lblPrecioDeVenta = new JLabel("Precio de Venta");
 		add(lblPrecioDeVenta, "14, 14, 9, 1");
 		
-		textField_2 = new JTextField();
-		add(textField_2, "4, 16, 9, 1, fill, default");
-		textField_2.setColumns(10);
+		cb_marca = new JComboBox();
+		add(cb_marca, "4, 16, 9, 1, fill, default");
 		
-		textField_8 = new JTextField();
-		add(textField_8, "14, 16, 9, 1, fill, default");
-		textField_8.setColumns(10);
+		sp_precioVenta = new JSpinner();
+		add(sp_precioVenta, "14, 16, 9, 1");
 		
 		JLabel lblPresentacion = new JLabel("Presentacion");
 		add(lblPresentacion, "4, 18, 9, 1");
@@ -170,13 +180,12 @@ public class VentanaModificar extends JPanel {
 		JLabel lblDescripcion = new JLabel("Descripcion");
 		add(lblDescripcion, "14, 18, 9, 1");
 		
-		textField_3 = new JTextField();
-		add(textField_3, "4, 20, 9, 1, fill, default");
-		textField_3.setColumns(10);
+		cb_presentacion = new JComboBox();
+		add(cb_presentacion, "4, 20, 9, 1, fill, default");
 		
-		textField_9 = new JTextField();
-		add(textField_9, "14, 20, 9, 1, fill, default");
-		textField_9.setColumns(10);
+		txt_descripcion = new JTextField();
+		add(txt_descripcion, "14, 20, 9, 1, fill, default");
+		txt_descripcion.setColumns(10);
 		
 		JLabel lblCantidad = new JLabel("Cantidad");
 		add(lblCantidad, "4, 22, 9, 1");
@@ -184,13 +193,11 @@ public class VentanaModificar extends JPanel {
 		JLabel lblStockMaximo = new JLabel("Stock Maximo");
 		add(lblStockMaximo, "14, 22, 9, 1");
 		
-		textField_4 = new JTextField();
-		add(textField_4, "4, 24, 9, 1, fill, default");
-		textField_4.setColumns(10);
+		sp_cantidad = new JSpinner();
+		add(sp_cantidad, "4, 24, 9, 1");
 		
-		textField_10 = new JTextField();
-		add(textField_10, "14, 24, 9, 1, fill, default");
-		textField_10.setColumns(10);
+		sp_stockMax = new JSpinner();
+		add(sp_stockMax, "14, 24, 9, 1");
 		
 		JLabel lblContenido = new JLabel("Contenido");
 		add(lblContenido, "4, 26, 9, 1");
@@ -198,21 +205,204 @@ public class VentanaModificar extends JPanel {
 		JLabel lblStockMinimo = new JLabel("Stock Minimo");
 		add(lblStockMinimo, "14, 26, 9, 1");
 		
-		textField_5 = new JTextField();
-		add(textField_5, "4, 28, 9, 1, fill, default");
-		textField_5.setColumns(10);
+		sp_contenido = new JSpinner();
+		add(sp_contenido, "4, 28, 9, 1");
 		
-		textField_11 = new JTextField();
-		add(textField_11, "14, 28, 9, 1, fill, default");
-		textField_11.setColumns(10);
+		sp_stockMin = new JSpinner();
+		add(sp_stockMin, "14, 28, 9, 1");
 		
 		JLabel lblUnidadDeMedida = new JLabel("Unidad de Medida");
 		add(lblUnidadDeMedida, "4, 30, 9, 1");
 		
-		textField_6 = new JTextField();
-		add(textField_6, "4, 32, 9, 1, fill, default");
-		textField_6.setColumns(10);
+		cb_unidadMedida = new JComboBox();
+		add(cb_unidadMedida, "4, 32, 9, 1, fill, default");
 
+		File file = new File("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/Marcas.txt");
+		try {
+			Scanner scanner = new Scanner(file);
+			do {
+				cb_marca.addItem(scanner.nextLine().trim());
+				
+			}while(scanner.hasNext());
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		file = new File("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/Presentacion.txt");
+		try {
+			Scanner scanner = new Scanner(file);
+			do {
+				cb_presentacion.addItem(scanner.nextLine().trim());
+			} while(scanner.hasNext());
+			scanner.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		file = new File("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/Tipos.txt");
+		try {
+			Scanner scanner = new Scanner(file);
+			do {
+				cb_categoria.addItem(scanner.nextLine().trim());
+				
+			} while(scanner.hasNext());
+			scanner.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		file = new File("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/Unidadmedida.txt");
+		try {
+			Scanner scanner = new Scanner(file);
+			do {
+				cb_unidadMedida.addItem(scanner.nextLine().trim());
+			} while(scanner.hasNext());
+			scanner.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	public void setProducto(Producto producto) {
+		sp_contenido.setValue(Integer.valueOf(producto.getContenido()));
+		nombre.setText(producto.getNombre());
+		cb_categoria.setSelectedItem(producto.getCategoria());
+	}
+
+	public JTextField getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(JTextField nombre) {
+		this.nombre = nombre;
+	}
+
+
+	public JTextField getDescripcion() {
+		return txt_descripcion;
+	}
+
+	public void setDescripcion(JTextField descripcion) {
+		this.txt_descripcion = descripcion;
+	}
+
+	public JTextField getBusqueda() {
+		return busqueda;
+	}
+
+	public void setBusqueda(JTextField busqueda) {
+		this.busqueda = busqueda;
+	}
+
+	public JButton getBuscar() {
+		return buscar;
+	}
+
+	public void setBuscar(JButton buscar) {
+		this.buscar = buscar;
+	}
+	
+	public JTextField getTxt_descripcion() {
+		return txt_descripcion;
+	}
+
+	public void setTxt_descripcion(JTextField txt_descripcion) {
+		this.txt_descripcion = txt_descripcion;
+	}
+
+	public JComboBox getCb_marca() {
+		return cb_marca;
+	}
+
+	public void setCb_marca(JComboBox cb_marca) {
+		this.cb_marca = cb_marca;
+	}
+
+	public JComboBox getCb_presentacion() {
+		return cb_presentacion;
+	}
+
+	public void setCb_presentacion(JComboBox cb_presentacion) {
+		this.cb_presentacion = cb_presentacion;
+	}
+
+	public JSpinner getSp_stockMin() {
+		return sp_stockMin;
+	}
+
+	public void setSp_stockMin(JSpinner sp_stockMin) {
+		this.sp_stockMin = sp_stockMin;
+	}
+
+	public JSpinner getSp_stockMax() {
+		return sp_stockMax;
+	}
+
+	public void setSp_stockMax(JSpinner sp_stockMax) {
+		this.sp_stockMax = sp_stockMax;
+	}
+
+	public JComboBox getCb_categoria() {
+		return cb_categoria;
+	}
+
+	public void setCb_categoria(JComboBox cb_categoria) {
+		this.cb_categoria = cb_categoria;
+	}
+
+	public JSpinner getSp_cantidad() {
+		return sp_cantidad;
+	}
+
+	public void setSp_cantidad(JSpinner sp_cantidad) {
+		this.sp_cantidad = sp_cantidad;
+	}
+
+	public JSpinner getSp_contenido() {
+		return sp_contenido;
+	}
+
+	public void setSp_contenido(JSpinner sp_contenido) {
+		this.sp_contenido = sp_contenido;
+	}
+
+	public JSpinner getSp_precioVenta() {
+		return sp_precioVenta;
+	}
+
+	public void setSp_precioVenta(JSpinner sp_precioVenta) {
+		this.sp_precioVenta = sp_precioVenta;
+	}
+
+	public JComboBox getCb_unidadMedida() {
+		return cb_unidadMedida;
+	}
+
+	public void setCb_unidadMedida(JComboBox cb_unidadMedida) {
+		this.cb_unidadMedida = cb_unidadMedida;
+	}
+
+	public Producto getProducto() {
+		String codigoBarras = busqueda.getText().trim();
+		String nombre = this.nombre.getText();
+		String marca =(String) cb_marca.getSelectedItem();
+		String presentacion = (String) cb_presentacion.getSelectedItem();
+		int cantidad = Integer.parseInt(sp_cantidad.getValue().toString());
+		String contenido = sp_contenido.getValue().toString();
+		String unidadMedida = cb_unidadMedida.getSelectedItem().toString();
+		String categoria = cb_categoria.getSelectedItem().toString();
+		double precioVenta = Double.parseDouble(sp_precioVenta.getValue().toString());
+		String descripcion = txt_descripcion.getText();
+		int stockMaximo = Integer.parseInt(sp_stockMax.getValue().toString());
+		int stockMinimo = Integer.parseInt(sp_stockMin.getValue().toString());
+		
+		return new Producto(codigoBarras, nombre, marca, presentacion, cantidad, contenido, unidadMedida, categoria, precioVenta,descripcion,stockMaximo, stockMinimo);
+				
+	}
 }

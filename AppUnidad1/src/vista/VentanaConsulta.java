@@ -1,19 +1,22 @@
 package vista;
 
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JCheckBox;
-import javax.swing.JTextField;
-import java.awt.Choice;
-import java.awt.Button;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
+
+import modelo.Producto;
 
 public class VentanaConsulta extends JPanel {
 	private JTextField busqueda;
@@ -124,6 +127,14 @@ public class VentanaConsulta extends JPanel {
 		busqueda = new JTextField();
 		add(busqueda, "2, 4, 20, 1, fill, default");
 		busqueda.setColumns(10);
+		busqueda.addKeyListener(new KeyAdapter() {
+			   public void keyTyped(KeyEvent e) {
+			      char c = e.getKeyChar();
+			      if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+			         e.consume();  // ignore event
+			      }
+			   }
+			});
 		
 		chkBusquedaCodigo = new JCheckBox("Busqueda por Codigo");
 		add(chkBusquedaCodigo, "30, 4, 13, 1");
@@ -227,5 +238,116 @@ public class VentanaConsulta extends JPanel {
 		cajaUnidadMedida.setColumns(10);
 
 	}
-
+	public void setConsulta(Producto producto) {
+//		private JTextField busqueda;
+//		private JTextField cajaNombre;
+//		private JTextField cajaMarca;
+//		private JTextField cajaPresentacion;
+//		private JTextField cajaCantidad;
+//		private JTextField cajaContenido;
+//		private JTextField cajaUnidadMedida;
+//		private JTextField cajaCategoria;
+//		private JTextField cajaPrecioVenta;
+//		private JTextField cajaDescripcion;
+//		private JTextField cajaStockMaximo;
+//		private JTextField cajaStockMinimo;
+//		private JCheckBox chkBusquedaCodigo;
+//		private JButton botonBuscar;
+		cajaNombre.setText(producto.getNombre());
+		cajaMarca.setText(producto.getMarca());
+		cajaPresentacion.setText(producto.getPresentacion());
+		cajaCantidad.setText(String.valueOf(producto.getCantidad()));
+		cajaContenido.setText(producto.getContenido());
+		cajaUnidadMedida.setText(producto.getUnidadMedida());
+		cajaCategoria.setText(producto.getCategoria());
+		cajaPrecioVenta.setText(String.valueOf(producto.getPrecioVenta()));
+		cajaDescripcion.setText(producto.getDescripcion());
+		cajaStockMaximo.setText(String.valueOf(producto.getStockMaximo()));
+		cajaStockMinimo.setText(String.valueOf(producto.getStockMinimo()));
+	}
+	public JTextField getBusqueda() {
+		return busqueda;
+	}
+	public void setBusqueda(JTextField busqueda) {
+		this.busqueda = busqueda;
+	}
+	public JTextField getCajaNombre() {
+		return cajaNombre;
+	}
+	public void setCajaNombre(JTextField cajaNombre) {
+		this.cajaNombre = cajaNombre;
+	}
+	public JTextField getCajaMarca() {
+		return cajaMarca;
+	}
+	public void setCajaMarca(JTextField cajaMarca) {
+		this.cajaMarca = cajaMarca;
+	}
+	public JTextField getCajaPresentacion() {
+		return cajaPresentacion;
+	}
+	public void setCajaPresentacion(JTextField cajaPresentacion) {
+		this.cajaPresentacion = cajaPresentacion;
+	}
+	public JTextField getCajaCantidad() {
+		return cajaCantidad;
+	}
+	public void setCajaCantidad(JTextField cajaCantidad) {
+		this.cajaCantidad = cajaCantidad;
+	}
+	public JTextField getCajaContenido() {
+		return cajaContenido;
+	}
+	public void setCajaContenido(JTextField cajaContenido) {
+		this.cajaContenido = cajaContenido;
+	}
+	public JTextField getCajaUnidadMedida() {
+		return cajaUnidadMedida;
+	}
+	public void setCajaUnidadMedida(JTextField cajaUnidadMedida) {
+		this.cajaUnidadMedida = cajaUnidadMedida;
+	}
+	public JTextField getCajaCategoria() {
+		return cajaCategoria;
+	}
+	public void setCajaCategoria(JTextField cajaCategoria) {
+		this.cajaCategoria = cajaCategoria;
+	}
+	public JTextField getCajaPrecioVenta() {
+		return cajaPrecioVenta;
+	}
+	public void setCajaPrecioVenta(JTextField cajaPrecioVenta) {
+		this.cajaPrecioVenta = cajaPrecioVenta;
+	}
+	public JTextField getCajaDescripcion() {
+		return cajaDescripcion;
+	}
+	public void setCajaDescripcion(JTextField cajaDescripcion) {
+		this.cajaDescripcion = cajaDescripcion;
+	}
+	public JTextField getCajaStockMaximo() {
+		return cajaStockMaximo;
+	}
+	public void setCajaStockMaximo(JTextField cajaStockMaximo) {
+		this.cajaStockMaximo = cajaStockMaximo;
+	}
+	public JTextField getCajaStockMinimo() {
+		return cajaStockMinimo;
+	}
+	public void setCajaStockMinimo(JTextField cajaStockMinimo) {
+		this.cajaStockMinimo = cajaStockMinimo;
+	}
+	public JCheckBox getChkBusquedaCodigo() {
+		return chkBusquedaCodigo;
+	}
+	public void setChkBusquedaCodigo(JCheckBox chkBusquedaCodigo) {
+		this.chkBusquedaCodigo = chkBusquedaCodigo;
+	}
+	public JButton getBotonBuscar() {
+		return botonBuscar;
+	}
+	public void setBotonBuscar(JButton botonBuscar) {
+		this.botonBuscar = botonBuscar;
+	}
+	
 }
