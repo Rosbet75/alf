@@ -1,12 +1,16 @@
 package vista;
 
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -31,14 +35,17 @@ public class VentanaConsulta extends JPanel {
 	private JTextField cajaDescripcion;
 	private JTextField cajaStockMaximo;
 	private JTextField cajaStockMinimo;
-	private JCheckBox chkBusquedaCodigo;
 	private JButton botonBuscar;
-
+	private JScrollPane listaOpciones;
+	private JList<String> origen;
 	/**
 	 * Create the panel.
 	 */
 	public VentanaConsulta() {
+		origen = new JList<>();
+		
 		setLayout(new FormLayout(new ColumnSpec[] {
+				
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -125,6 +132,11 @@ public class VentanaConsulta extends JPanel {
 		add(lblNewLabel, "2, 2, 45, 1");
 		
 		busqueda = new JTextField();
+		busqueda.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+		});
 		add(busqueda, "2, 4, 20, 1, fill, default");
 		busqueda.setColumns(10);
 		busqueda.addKeyListener(new KeyAdapter() {
@@ -135,9 +147,6 @@ public class VentanaConsulta extends JPanel {
 			      }
 			   }
 			});
-		
-		chkBusquedaCodigo = new JCheckBox("Busqueda por Codigo");
-		add(chkBusquedaCodigo, "30, 4, 13, 1");
 		
 		botonBuscar = new JButton("Buscar");
 		add(botonBuscar, "4, 6, 15, 1");
@@ -337,17 +346,14 @@ public class VentanaConsulta extends JPanel {
 	public void setCajaStockMinimo(JTextField cajaStockMinimo) {
 		this.cajaStockMinimo = cajaStockMinimo;
 	}
-	public JCheckBox getChkBusquedaCodigo() {
-		return chkBusquedaCodigo;
-	}
-	public void setChkBusquedaCodigo(JCheckBox chkBusquedaCodigo) {
-		this.chkBusquedaCodigo = chkBusquedaCodigo;
-	}
+	
 	public JButton getBotonBuscar() {
 		return botonBuscar;
 	}
 	public void setBotonBuscar(JButton botonBuscar) {
 		this.botonBuscar = botonBuscar;
 	}
-	
+	public void fillList(ArrayList<Producto> listaProductos) {
+		
+	}
 }

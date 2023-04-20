@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 
 public class PanelResurtido extends JPanel {
 	private JTextField busquedaField;
-	private JCheckBox chckbxBusquedaPorCodigo;
 	private JSpinner sp_cantidad;
 	private JButton btnAgregarAlCarrito;
 
@@ -55,19 +54,12 @@ public class PanelResurtido extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 
-		JLabel lblNombreDeProducto = new JLabel("Nombre de producto");
-		GridBagConstraints gbc_lblNombreDeProducto = new GridBagConstraints();
-		gbc_lblNombreDeProducto.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNombreDeProducto.gridx = 0;
-		gbc_lblNombreDeProducto.gridy = 0;
-		add(lblNombreDeProducto, gbc_lblNombreDeProducto);
-
-		chckbxBusquedaPorCodigo = new JCheckBox("Busqueda por codigo");
-		GridBagConstraints gbc_chckbxBusquedaPorCodigo = new GridBagConstraints();
-		gbc_chckbxBusquedaPorCodigo.insets = new Insets(0, 0, 5, 0);
-		gbc_chckbxBusquedaPorCodigo.gridx = 1;
-		gbc_chckbxBusquedaPorCodigo.gridy = 0;
-		add(chckbxBusquedaPorCodigo, gbc_chckbxBusquedaPorCodigo);
+		JLabel lblCodProd = new JLabel("Codigo de barras del producto");
+		GridBagConstraints gbc_lblCodProd = new GridBagConstraints();
+		gbc_lblCodProd.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCodProd.gridx = 0;
+		gbc_lblCodProd.gridy = 0;
+		add(lblCodProd, gbc_lblCodProd);
 
 		busquedaField = new JTextField();
 		GridBagConstraints gbc_busquedaField = new GridBagConstraints();

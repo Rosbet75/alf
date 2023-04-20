@@ -116,6 +116,10 @@ public class VentanaPrincipal extends JFrame {
 				setVisible(true);
 
 				botonRegistrar.addActionListener(s -> {
+					contentPane.removeAll();
+					contentPane.add(panelMenu, BorderLayout.WEST);
+					contentPane.repaint();
+					repaint();
 
 					panelEncabezado = new PanelEncabezado("Registrar un producto",
 							"El producto se anexara al catalogo.");
@@ -130,97 +134,217 @@ public class VentanaPrincipal extends JFrame {
 
 					});
 					cancelar.addActionListener(g -> {
-						
-						
+						contentPane.remove(panelCapturaProductos);
+						contentPane.remove(panelOpciones);
+						contentPane.remove(panelEncabezado);
+						contentPane.repaint();
+						repaint();
+
 					});
 					contentPane.add(panelEncabezado, BorderLayout.NORTH);
 					contentPane.add(panelCapturaProductos, BorderLayout.CENTER);
 					contentPane.add(panelOpciones, BorderLayout.SOUTH);
 					setVisible(true);
+					contentPane.repaint();
+					repaint();
 
 				});
 				botonResurtir = panelMenu.getBotonResurtir();
 				botonResurtir.addActionListener(s -> {
-					panelEncabezado = new PanelEncabezado("Resurtir Productos", "El producto se sumara al inventario");
-					panelResurtido = new PanelResurtido(listaProductos);
-					panelOpciones = new PanelOpciones();
+					if(!(listaProductos.isEmpty())) {
 
-					contentPane.add(panelEncabezado, BorderLayout.NORTH);
-					contentPane.add(panelResurtido, BorderLayout.CENTER);
-					contentPane.add(panelOpciones, BorderLayout.SOUTH);
-					setVisible(true);
+						contentPane.removeAll();
+						contentPane.add(panelMenu, BorderLayout.WEST);
+						contentPane.repaint();
+						repaint();
+						panelEncabezado = new PanelEncabezado("Resurtir Productos", "El producto se sumara al inventario");
+						panelResurtido = new PanelResurtido(listaProductos);
+						panelOpciones = new PanelOpciones();
+
+						contentPane.add(panelEncabezado, BorderLayout.NORTH);
+						contentPane.add(panelResurtido, BorderLayout.CENTER);
+						contentPane.add(panelOpciones, BorderLayout.SOUTH);
+						setVisible(true);
+						contentPane.repaint();
+						repaint();
+
+					}else {
+						JOptionPane.showMessageDialog(null, "La lista de productos esta vacia");
+					}
 				});
 
 				botonVenta = panelMenu.getBotonVenta();
 				botonVenta.addActionListener(s -> {
-					panelEncabezado = new PanelEncabezado("Vender Productos", "El producto se sumara al inventario");
-					panelVenta = new PanelVenta();
-					panelOpciones = new PanelOpciones();
+					if(!(listaProductos.isEmpty())) {
+						contentPane.removeAll();
+						contentPane.add(panelMenu, BorderLayout.WEST);
+						contentPane.repaint();
+						repaint();
+						panelEncabezado = new PanelEncabezado("Vender Productos", "El producto se sumara al inventario");
+						panelVenta = new PanelVenta();
+						panelOpciones = new PanelOpciones();
 
-					contentPane.add(panelEncabezado, BorderLayout.NORTH);
-					contentPane.add(panelVenta, BorderLayout.CENTER);
-					contentPane.add(panelOpciones, BorderLayout.SOUTH);
-					setVisible(true);
+						contentPane.add(panelEncabezado, BorderLayout.NORTH);
+						contentPane.add(panelVenta, BorderLayout.CENTER);
+						contentPane.add(panelOpciones, BorderLayout.SOUTH);
+						setVisible(true);
+						contentPane.repaint();
+						repaint();
+					} else {
+						JOptionPane.showMessageDialog(null, "La lista de productos esta vacia");
+					}
 				});
 				botonModificar = panelMenu.getBotonModificar();
 				botonModificar.addActionListener(s -> {
-					if(!listaProductos.isEmpty()) {
-						panelEncabezado = new PanelEncabezado("Modificar Productos", "Modifica las caracteristicas de un producto");
-						panelModificar = new VentanaModificar();
-						var buscar = panelModificar.getBuscar();
-						buscar.addActionListener(b -> {
-							String cod = panelModificar.getBusqueda().getText().trim();
-							for(int i = 0; i<listaProductos.size(); i++) {
-								if(listaProductos.get(i).getCodigoBarras().equals(cod)) {
-									panelModificar.setProducto(listaProductos.get(i));
+					if(!(listaProductos.isEmpty())) {
+						contentPane.removeAll();
+						contentPane.add(panelMenu, BorderLayout.WEST);
+						contentPane.repaint();
+						repaint();
+						if(!listaProductos.isEmpty()) {
+							panelEncabezado = new PanelEncabezado("Modificar Productos", "Modifica las caracteristicas de un producto");
+							panelModificar = new VentanaModificar();
+							var buscar = panelModificar.getBuscar();
+							buscar.addActionListener(b -> {
+								String cod = panelModificar.getBusqueda().getText().trim();
+								for(int i = 0; i<listaProductos.size(); i++) {
+									if(listaProductos.get(i).getCodigoBarras().equals(cod)) {
+										panelModificar.setProducto(listaProductos.get(i));
+									}
 								}
-							}
-						});
-						panelOpciones = new PanelOpciones();
-						var cancelar = panelOpciones.getBotonAceptar();
-						var aceptar = panelOpciones.getBotonCancelar();
-						aceptar.addActionListener(d -> {
-							String cod = panelModificar.getBusqueda().getText().trim();
-							for(int i = 0; i<listaProductos.size(); i++) {
-								if(listaProductos.get(i).getCodigoBarras().equals(cod)) {
-									listaProductos.add(i, panelModificar.getProducto());
+							});
+							panelOpciones = new PanelOpciones();
+							var cancelar = panelOpciones.getBotonAceptar();
+							cancelar.addActionListener(f -> {
+								contentPane.remove(panelEncabezado);
+								contentPane.remove(panelModificar);
+								contentPane.remove(panelOpciones);
+								contentPane.repaint();
+								repaint();
+							});
+							var aceptar = panelOpciones.getBotonCancelar();
+							aceptar.addActionListener(d -> {
+								String cod = panelModificar.getBusqueda().getText().trim();
+								for(int i = 0; i<listaProductos.size(); i++) {
+									if(listaProductos.get(i).getCodigoBarras().equals(cod)) {
+										listaProductos.add(i, panelModificar.getProducto());
+										break;
+									}
 								}
-							}
-						});
-						panelOpciones.getBotonContinuar().setVisible(false);
-						cancelar.addActionListener(h -> {
+							});
+							panelOpciones.getBotonContinuar().setVisible(false);
+							cancelar.addActionListener(h -> {
+								contentPane.remove(panelEncabezado);
+								contentPane.remove(panelModificar);
+								contentPane.remove(panelOpciones);
+								contentPane.repaint();
+								repaint();
+							});
 
-						});
-						aceptar.addActionListener(t -> {
-
-						});
-						contentPane.add(panelEncabezado, BorderLayout.NORTH);
-						contentPane.add(panelModificar, BorderLayout.CENTER);
-						contentPane.add(panelOpciones, BorderLayout.SOUTH);
-						setVisible(true);
+							contentPane.add(panelEncabezado, BorderLayout.NORTH);
+							contentPane.add(panelModificar, BorderLayout.CENTER);
+							contentPane.add(panelOpciones, BorderLayout.SOUTH);
+							setVisible(true);
+							contentPane.repaint();
+							repaint();
+						} else {
+							JOptionPane.showMessageDialog(null, "la lista de productos esta vacia");
+						}
 					} else {
-						JOptionPane.showMessageDialog(null, "la lista de productos esta vacia");
+						JOptionPane.showMessageDialog(null, "La lista de productos esta vacia");
 					}
 				});
 				botonConsultar = panelMenu.getBotonConsultar();
 				botonConsultar.addActionListener(s -> {
-					panelEncabezado = new PanelEncabezado("Consultar Productos", "El producto se mostrara en pantalla");
-					panelConsultar = new VentanaConsulta();
-					panelOpciones = new PanelOpciones();
-					JButton botonBuscar = panelConsultar.getBotonBuscar();
-					botonBuscar.addActionListener(d -> {
-						String codigo = panelConsultar.getBusqueda().getText();
-						for(Producto producto:listaProductos) {
-							if(producto.getCodigoBarras().equals(codigo)) {
-								panelConsultar.setConsulta(producto);
-								break;
+					if(!listaProductos.isEmpty()) {
+						contentPane.removeAll();
+						contentPane.add(panelMenu, BorderLayout.WEST);
+						contentPane.repaint();
+						repaint();
+						panelEncabezado = new PanelEncabezado("Consultar Productos", "El producto se mostrara en pantalla");
+						panelConsultar = new VentanaConsulta();
+						panelOpciones = new PanelOpciones();
+						JButton botonBuscar = panelConsultar.getBotonBuscar();
+						botonBuscar.addActionListener(d -> {
+							String codigo = panelConsultar.getBusqueda().getText();
+							for(Producto producto:listaProductos) {
+								if(producto.getCodigoBarras().equals(codigo)) {
+									panelConsultar.setConsulta(producto);
+									break;
+								}
 							}
-						}
-					});
-					contentPane.add(panelEncabezado, BorderLayout.NORTH);
-					contentPane.add(panelConsultar, BorderLayout.CENTER);
-					contentPane.add(panelOpciones, BorderLayout.SOUTH);
-					setVisible(true);
+						});
+						panelOpciones.getBotonCancelar().setVisible(false);
+						panelOpciones.getBotonContinuar().setVisible(false);
+						panelOpciones.getBotonAceptar().addActionListener(d ->{
+							contentPane.remove(panelEncabezado);
+							contentPane.remove(panelConsultar);
+							contentPane.remove(panelOpciones);
+							contentPane.repaint();
+							repaint();
+						});
+						contentPane.add(panelEncabezado, BorderLayout.NORTH);
+						contentPane.add(panelConsultar, BorderLayout.CENTER);
+						contentPane.add(panelOpciones, BorderLayout.SOUTH);
+						setVisible(true);
+						contentPane.repaint();
+						repaint();
+					} else {
+						JOptionPane.showMessageDialog(null, "la lista de productos esta vacia");
+					}
+				});
+				botonEliminar = panelMenu.getBotonEliminar();
+				botonEliminar.addActionListener(s ->{
+					if(!(listaProductos.isEmpty())) {
+						contentPane.removeAll();
+						contentPane.add(panelMenu, BorderLayout.WEST);
+						contentPane.repaint();
+						repaint();
+						boolean truth = false;
+						panelEncabezado = new PanelEncabezado("Eliminar Productos", "Elimina productos de la base de datos");
+						panelConsultar = new VentanaConsulta();
+						panelOpciones = new PanelOpciones();
+						JButton botonBuscar = panelConsultar.getBotonBuscar();
+						botonBuscar.addActionListener(d -> {
+							String codigo = panelConsultar.getBusqueda().getText();
+							for(Producto producto:listaProductos) {
+								if(producto.getCodigoBarras().equals(codigo)) {
+									panelConsultar.setConsulta(producto);
+									panelOpciones.getBotonAceptar().setVisible(true);
+									panelOpciones.repaint();
+									break;
+								}
+							}
+
+						});
+						panelOpciones.getBotonCancelar().addActionListener(g -> {
+							contentPane.remove(panelEncabezado);
+							contentPane.remove(panelConsultar);
+							contentPane.remove(panelOpciones);
+							contentPane.repaint();
+							repaint();
+						});
+						panelOpciones.getBotonContinuar().setVisible(false);
+						panelOpciones.getBotonAceptar().setVisible(false);
+						panelOpciones.getBotonAceptar().addActionListener(d ->{
+							if(JOptionPane.showConfirmDialog(null, "estas seguro?", null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+								for(int i = 0; i<listaProductos.size(); i++) {
+									if(listaProductos.get(i).getCodigoBarras().equals(panelConsultar.getBusqueda().getText().trim())) {
+										listaProductos.remove(i);
+										break;
+									}
+								}
+							}
+						});
+						contentPane.add(panelEncabezado, BorderLayout.NORTH);
+						contentPane.add(panelConsultar, BorderLayout.CENTER);
+						contentPane.add(panelOpciones, BorderLayout.SOUTH);
+						setVisible(true);
+						contentPane.repaint();
+						repaint();
+					} else {
+						JOptionPane.showMessageDialog(null, "La lista de productos esta vacia");
+					}
 				});
 				//				botonModificar = panelMenu.getBotonModificar();
 				//				botonEliminar = panelMenu.getBotonEliminar();
@@ -228,11 +352,20 @@ public class VentanaPrincipal extends JFrame {
 				botonListar.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-
-						// TODO anadir argumento al constructor
-						contentPane.add(new PanelEncabezado("Listar Productos", "Listado de todos los productos registrados"), BorderLayout.NORTH);
-						contentPane.add(new VistaTabla(listaProductos), BorderLayout.CENTER);
-						setVisible(true);
+						if(!(listaProductos.isEmpty())) {
+							contentPane.removeAll();
+							contentPane.add(panelMenu, BorderLayout.WEST);
+							contentPane.repaint();
+							repaint();
+							// TODO anadir argumento al constructor
+							contentPane.add(new PanelEncabezado("Listar Productos", "Listado de todos los productos registrados"), BorderLayout.NORTH);
+							contentPane.add(new VistaTabla(listaProductos), BorderLayout.CENTER);
+							setVisible(true);
+							contentPane.repaint();
+							repaint();
+						} else {
+							JOptionPane.showMessageDialog(null, "La lista de productos esta vacia");
+						}
 					}
 				});
 			}

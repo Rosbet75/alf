@@ -270,9 +270,38 @@ public class VentanaModificar extends JPanel {
 	}
 
 	public void setProducto(Producto producto) {
-		sp_contenido.setValue(Integer.valueOf(producto.getContenido()));
+		//sp_contenido.setValue(Integer.valueOf(producto.getContenido()));
 		nombre.setText(producto.getNombre());
-		cb_categoria.setSelectedItem(producto.getCategoria());
+		for(int i = 0; i<cb_categoria.getItemCount(); i++) {
+			if(producto.getCategoria().equals(cb_categoria.getItemAt(i))) {
+				cb_categoria.setSelectedIndex(i);
+				break;
+			}
+		}
+		for(int i = 0; i<cb_marca.getItemCount(); i++) {
+			if(producto.getCategoria().equals(cb_marca.getItemAt(i))) {
+				cb_marca.setSelectedIndex(i);
+				break;
+			}
+		}
+		sp_precioVenta.setValue((producto.getPrecioVenta()));
+		for(int i = 0; i<cb_presentacion.getItemCount(); i++) {
+			if(producto.getCategoria().equals(cb_presentacion.getItemAt(i))) {
+				cb_presentacion.setSelectedIndex(i);
+				break;
+			}
+		}
+		txt_descripcion.setText(producto.getDescripcion());
+		sp_stockMax.setValue(producto.getStockMaximo());
+		sp_stockMin.setValue(producto.getStockMinimo());
+		sp_contenido.setValue(producto.getContenido());
+		sp_cantidad.setValue(producto.getCantidad());
+		for(int i = 0; i<cb_unidadMedida.getItemCount(); i++) {
+			if(producto.getCategoria().equals(cb_unidadMedida.getItemAt(i))) {
+				cb_unidadMedida.setSelectedIndex(i);
+				break;
+			}
+		}
 	}
 
 	public JTextField getNombre() {

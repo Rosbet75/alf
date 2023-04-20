@@ -10,12 +10,16 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import dao.IOTextFile;
+import javax.swing.JScrollPane;
 
 public class VistaLista extends JFrame {
 
@@ -24,6 +28,7 @@ public class VistaLista extends JFrame {
 	private JList list;
 	private List<String> origen;
 	private int y;
+	private JScrollPane scrollPane;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -78,12 +83,21 @@ public class VistaLista extends JFrame {
 
 		contentPane.add(caja);
 		caja.setColumns(10);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(111, 44, 162, 90);
+		contentPane.add(scrollPane);
 
 		list = new JList();
+		scrollPane.setViewportView(list);
 		list.setBorder(new LineBorder(new Color(192, 192, 192)));
 		list.setModel(modelx);
-
-		list.setBounds(111, 44, 162, 90);
-		contentPane.add(list);
+		list.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// TODO Auto-generated method stub
+				JOptionPane.showMessageDialog(null, "hola " + list.getSelectedValue());
+			}
+		});
 	}
 }
