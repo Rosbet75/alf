@@ -4,12 +4,17 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -36,11 +41,20 @@ public class VentanaModificar extends JPanel {
 	private JSpinner sp_contenido;
 	private JSpinner sp_precioVenta;
 	private JComboBox cb_unidadMedida;
+	private List<String> origen;
+	private JList<String> list;
+	private DefaultListModel modelx;
+	private JScrollPane scrollPane;
 
 	/**
 	 * Create the panel.
 	 */
 	public VentanaModificar() {
+		modelx = new DefaultListModel();
+		origen = new ArrayList<>();
+		scrollPane = new JScrollPane();
+		list = new JList();
+		scrollPane.setViewportView(list);
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
@@ -71,7 +85,7 @@ public class VentanaModificar extends JPanel {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
+				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -102,7 +116,7 @@ public class VentanaModificar extends JPanel {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
+				RowSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -131,13 +145,34 @@ public class VentanaModificar extends JPanel {
 		add(busqueda, "2, 4, 20, 1, fill, default");
 		busqueda.setColumns(10);
 		busqueda.addKeyListener(new KeyAdapter() {
-			   public void keyTyped(KeyEvent e) {
-			      char c = e.getKeyChar();
-			      if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
-			         e.consume();  // ignore event
-			      }
-			   }
-			});
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+					e.consume();  // ignore event
+				}
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				//list.setVisible(true);
+				
+				String filter = busqueda.getText().trim();
+				modelx.removeAllElements();
+				int y;
+				if (filter.isEmpty()) {
+					modelx.addAll(origen);
+					y = 90;
+				} else {
+					var filteredElements = origen.stream().filter(s -> s.toLowerCase().contains(filter)).toList();
+					modelx.addAll(filteredElements);
+					y = 20 * filteredElements.size();
+				}
+				list.setModel(modelx);
+				scrollPane.setVisible(true);
+			}
+		});
+		
+		this.add(scrollPane,"30, 14, 13, 11, fill, fill");
+		scrollPane.setVisible(false);
 		
 		buscar = new JButton("Buscar");
 		add(buscar, "4, 6, 15, 1");
@@ -415,6 +450,39 @@ public class VentanaModificar extends JPanel {
 
 	public void setCb_unidadMedida(JComboBox cb_unidadMedida) {
 		this.cb_unidadMedida = cb_unidadMedida;
+	}
+	
+
+	public List<String> getOrigen() {
+		return origen;
+	}
+
+	public void setOrigen(List<String> origen) {
+		this.origen = origen;
+	}
+
+	public JList<String> getList() {
+		return list;
+	}
+
+	public void setList(JList<String> list) {
+		this.list = list;
+	}
+
+	public DefaultListModel getModelx() {
+		return modelx;
+	}
+
+	public void setModelx(DefaultListModel modelx) {
+		this.modelx = modelx;
+	}
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public void setScrollPane(JScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
 	}
 
 	public Producto getProducto() {

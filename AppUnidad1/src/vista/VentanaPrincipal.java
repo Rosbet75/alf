@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -18,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import modelo.Producto;
 import modelo.Resurtido;
@@ -240,7 +243,30 @@ public class VentanaPrincipal extends JFrame {
 								contentPane.repaint();
 								repaint();
 							});
+							List<String> dawn = new ArrayList();
 
+							for(Producto producto: listaProductos) {
+								dawn.add(producto.getCodigoBarras());
+							}
+							panelModificar.setOrigen(dawn);
+							JList<String> list = panelModificar.getList();
+							list.addListSelectionListener(new ListSelectionListener () {
+
+								@Override
+								public void valueChanged(ListSelectionEvent e) {
+									// TODO Auto-generated method stub
+									panelModificar.getBusqueda().setText(list.getSelectedValue());
+									String codigo = panelModificar.getBusqueda().getText();
+									for(Producto producto:listaProductos) {
+										if(producto.getCodigoBarras().equals(codigo)) {
+											panelModificar.setProducto(producto);
+											panelOpciones.getBotonAceptar().setVisible(true);
+											break;
+										}
+									}
+								}
+
+							});
 							contentPane.add(panelEncabezado, BorderLayout.NORTH);
 							contentPane.add(panelModificar, BorderLayout.CENTER);
 							contentPane.add(panelOpciones, BorderLayout.SOUTH);
@@ -263,6 +289,12 @@ public class VentanaPrincipal extends JFrame {
 						repaint();
 						panelEncabezado = new PanelEncabezado("Consultar Productos", "El producto se mostrara en pantalla");
 						panelConsultar = new VentanaConsulta();
+						List<String> dawn = new ArrayList();
+
+						for(Producto producto: listaProductos) {
+							dawn.add(producto.getCodigoBarras());
+						}
+						panelConsultar.setOrigen(dawn);
 						panelOpciones = new PanelOpciones();
 						JButton botonBuscar = panelConsultar.getBotonBuscar();
 						botonBuscar.addActionListener(d -> {
@@ -273,6 +305,23 @@ public class VentanaPrincipal extends JFrame {
 									break;
 								}
 							}
+						});
+						JList<String> list = panelConsultar.getList();
+						list.addListSelectionListener(new ListSelectionListener () {
+
+							@Override
+							public void valueChanged(ListSelectionEvent e) {
+								// TODO Auto-generated method stub
+								panelConsultar.getBusqueda().setText(list.getSelectedValue());
+								String codigo = panelConsultar.getBusqueda().getText();
+								for(Producto producto:listaProductos) {
+									if(producto.getCodigoBarras().equals(codigo)) {
+										panelConsultar.setConsulta(producto);
+										break;
+									}
+								}
+							}
+
 						});
 						panelOpciones.getBotonCancelar().setVisible(false);
 						panelOpciones.getBotonContinuar().setVisible(false);
@@ -335,6 +384,30 @@ public class VentanaPrincipal extends JFrame {
 									}
 								}
 							}
+						});
+						List<String> dawn = new ArrayList();
+
+						for(Producto producto: listaProductos) {
+							dawn.add(producto.getCodigoBarras());
+						}
+						panelConsultar.setOrigen(dawn);
+						JList<String> list = panelConsultar.getList();
+						list.addListSelectionListener(new ListSelectionListener () {
+
+							@Override
+							public void valueChanged(ListSelectionEvent e) {
+								// TODO Auto-generated method stub
+								panelConsultar.getBusqueda().setText(list.getSelectedValue());
+								String codigo = panelConsultar.getBusqueda().getText();
+								for(Producto producto:listaProductos) {
+									if(producto.getCodigoBarras().equals(codigo)) {
+										panelConsultar.setConsulta(producto);
+										panelOpciones.getBotonAceptar().setVisible(true);
+										break;
+									}
+								}
+							}
+
 						});
 						contentPane.add(panelEncabezado, BorderLayout.NORTH);
 						contentPane.add(panelConsultar, BorderLayout.CENTER);

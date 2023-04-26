@@ -3,24 +3,27 @@ package vista;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
 import modelo.Producto;
 import modelo.RenglonResurtido;
 import modelo.Resurtido;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class PanelResurtido extends JPanel {
 	private JTextField busquedaField;
@@ -35,20 +38,54 @@ public class PanelResurtido extends JPanel {
 	private JTable tablaProductos;
 	private JScrollPane scroll_productos;
 	private List<Producto> listaProductos;
+	private List<Producto> listaSeleccion;
 	private int totalProductos;
-	//private JTable tabla;
+	private JTable tabla;
 	private ModeloTabla modeloTabla;
+	private ModeloTabla modeloSeleccion;
 	private JSpinner sp_precio;
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelResurtido(List<Producto> listaProductos) {
-		this.listaProductos = listaProductos;
-		this.totalProductos = listaProductos.size();
-		this.modeloTabla = new ModeloTabla();
+	public PanelResurtido(List<Producto> lista) {
+		this.listaProductos = lista;
+		this.totalProductos = lista.size();
+		this.listaSeleccion = new ArrayList<>();
+		this.modeloTabla = new ModeloTabla(this.listaProductos);
+		if(!listaSeleccion.isEmpty()) {
+		this.modeloSeleccion = new ModeloTabla(this.listaSeleccion);
+		}
+		this.tabla = new JTable(modeloTabla);
+		if (!listaSeleccion.isEmpty()) {
+			this.tabla_seleccion = new JTable(modeloSeleccion);
+		}
+		ListSelectionModel model = tabla.getSelectionModel();
+		model.addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				if(! model.isSelectionEmpty()) {
+					int selectedRow = model.getMinSelectionIndex();
+					//System.out.println(listaProductos.size());
+					
+					if (!listaProductos.isEmpty()) {
+						listaSeleccion.add(listaProductos.get(selectedRow));
+						listaProductos.remove(selectedRow);
+						
+					}
+					modeloTabla = new ModeloTabla(listaProductos);
+					if (!listaSeleccion.isEmpty()) {
+						modeloSeleccion = new ModeloTabla(listaSeleccion);
+					}
+				}
+
+			}
+
+		});
+
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0};
+		gridBagLayout.columnWidths = new int[]{385, 496, 0};
 		gridBagLayout.rowHeights = new int[] {0, 0, 0, 0, 80, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
@@ -93,7 +130,7 @@ public class PanelResurtido extends JPanel {
 		add(scroll_productos, gbc_scroll_productos);
 
 		tablaProductos = new JTable(modeloTabla);
-		scroll_productos.setViewportView(tablaProductos);
+		scroll_productos.setViewportView(tabla);
 
 		JLabel lblPrecio = new JLabel("Precio");
 		GridBagConstraints gbc_lblPrecio = new GridBagConstraints();
@@ -108,7 +145,7 @@ public class PanelResurtido extends JPanel {
 		gbc_lblProductosEnSeleccion.gridx = 1;
 		gbc_lblProductosEnSeleccion.gridy = 3;
 		add(lblProductosEnSeleccion, gbc_lblProductosEnSeleccion);
-		
+
 		sp_precio = new JSpinner();
 		GridBagConstraints gbc_sp_precio = new GridBagConstraints();
 		gbc_sp_precio.insets = new Insets(0, 0, 5, 5);
@@ -122,19 +159,16 @@ public class PanelResurtido extends JPanel {
 		gbc_scroll_seleccion.insets = new Insets(0, 0, 5, 0);
 		gbc_scroll_seleccion.gridx = 1;
 		gbc_scroll_seleccion.gridy = 4;
-		add(scroll_seleccion, gbc_scroll_seleccion);
+		this.add(scroll_seleccion, gbc_scroll_seleccion);
 
-		tabla_seleccion = new JTable();
+		//tabla_seleccion = new JTable();
 		scroll_seleccion.setViewportView(tabla_seleccion);
 
 		btnAgregarAlCarrito = new JButton("Agregar al carrito");
 		btnAgregarAlCarrito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Integer.parseInt(sp_cantidad.getValue().toString()) != 0) {
-					listaProductos.add(new Producto());
-					modeloTabla = new ModeloTabla();
-					tablaProductos = new JTable(modeloTabla);
-					scroll_productos.setViewportView(tablaProductos);
+
 				}
 			}
 		});
@@ -161,9 +195,9 @@ public class PanelResurtido extends JPanel {
 				"Contenido", "Unidad de medida", "Categoria", "Precio de venta", "Descripcion", "Stock maximo",
 		"Stock minimo" };
 
-		public ModeloTabla() {
-			productos = new Object[totalProductos][12];
-			for (int i = 0; i < totalProductos; i++) {
+		public ModeloTabla(List<Producto> listaProductos) {
+			productos = new Object[listaProductos.size()][12];
+			for (int i = 0; i < listaProductos.size(); i++) {
 				productos[i][0] = listaProductos.get(i).getCodigoBarras();
 				productos[i][1] = listaProductos.get(i).getNombre();
 				productos[i][2] = listaProductos.get(i).getMarca();
@@ -200,5 +234,7 @@ public class PanelResurtido extends JPanel {
 		}
 
 	}
+
+
 
 }
