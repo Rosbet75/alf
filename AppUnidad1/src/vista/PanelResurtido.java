@@ -5,7 +5,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -21,9 +28,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 
+import com.toedter.calendar.JDateChooser;
+
 import modelo.Producto;
 import modelo.RenglonResurtido;
 import modelo.Resurtido;
+import modelo.Seleccion;
 
 public class PanelResurtido extends JPanel {
 	private JTextField busquedaField;
@@ -35,26 +45,33 @@ public class PanelResurtido extends JPanel {
 
 	private JTable tabla_seleccion;
 	private JScrollPane scroll_seleccion;
-	private JTable tablaProductos;
+	//private JTable tablaProductos;
 	private JScrollPane scroll_productos;
 	private List<Producto> listaProductos;
-	private List<Producto> listaSeleccion;
+	private List<Seleccion> listaSeleccion;
 	private int totalProductos;
 	private JTable tabla;
 	private ModeloTabla modeloTabla;
-	private ModeloTabla modeloSeleccion;
+	private ModeloSeleccion modeloSeleccion;
 	private JSpinner sp_precio;
-
+	private int selectedRow;
+	private boolean allow;
+	private JDateChooser jdatechooser;
 	/**
 	 * Create the panel.
 	 */
 	public PanelResurtido(List<Producto> lista) {
+		allow = false;
 		this.listaProductos = lista;
 		this.totalProductos = lista.size();
 		this.listaSeleccion = new ArrayList<>();
 		this.modeloTabla = new ModeloTabla(this.listaProductos);
+		this.listaSeleccion.add(new Seleccion(new Producto("1","asdf","adsfasdf", "asdfdsa",13, "asdfafe","adsfasdf","adsfasdf",34.55,"asdfeasdf",3434,2455555), 1, 1, new Date()));
+		List<Producto> origen = new ArrayList<Producto>();
+		origen.addAll(listaProductos);
+		origen.toString();
 		if(!listaSeleccion.isEmpty()) {
-		this.modeloSeleccion = new ModeloTabla(this.listaSeleccion);
+			this.modeloSeleccion = new ModeloSeleccion(this.listaSeleccion);
 		}
 		this.tabla = new JTable(modeloTabla);
 		if (!listaSeleccion.isEmpty()) {
@@ -65,18 +82,9 @@ public class PanelResurtido extends JPanel {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if(! model.isSelectionEmpty()) {
-					int selectedRow = model.getMinSelectionIndex();
-					//System.out.println(listaProductos.size());
-					
-					if (!listaProductos.isEmpty()) {
-						listaSeleccion.add(listaProductos.get(selectedRow));
-						listaProductos.remove(selectedRow);
-						
-					}
-					modeloTabla = new ModeloTabla(listaProductos);
-					if (!listaSeleccion.isEmpty()) {
-						modeloSeleccion = new ModeloTabla(listaSeleccion);
-					}
+					selectedRow = model.getMinSelectionIndex();
+					allow = true;
+					//OptionPane.showMessageDialog(null, listaProductos.get(selectedRow));
 				}
 
 			}
@@ -99,6 +107,63 @@ public class PanelResurtido extends JPanel {
 		add(lblCodProd, gbc_lblCodProd);
 
 		busquedaField = new JTextField();
+		busquedaField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+			}
+		});
+		busquedaField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String filter = busquedaField.getText().trim();
+				listaProductos.clear();
+				int y;
+				if (filter.isEmpty()) {
+					listaProductos.addAll(origen);
+					y = 90;
+				} else {
+					var filteredElements = origen.stream().filter(s -> s.getCodigoBarras().toLowerCase().contains(filter)).toList();
+
+					listaProductos.addAll(filteredElements);
+					for(Producto producto: listaProductos) {
+						System.out.println(producto.toString());
+					}
+					y = 20 * filteredElements.size();
+				}
+				scroll_productos.remove(tabla);
+				scroll_seleccion.remove(tabla_seleccion);
+				modeloSeleccion = new ModeloSeleccion(listaSeleccion);
+				modeloTabla = new ModeloTabla(listaProductos);
+				tabla = new JTable(modeloTabla);
+				tabla_seleccion = new JTable(modeloSeleccion);
+				ListSelectionModel model = tabla.getSelectionModel();
+				model.addListSelectionListener(new ListSelectionListener() {
+					@Override
+					public void valueChanged(ListSelectionEvent e) {
+						if(! model.isSelectionEmpty()) {
+							selectedRow = model.getMinSelectionIndex();
+							allow = true;
+							//OptionPane.showMessageDialog(null, listaProductos.get(selectedRow));
+						}
+
+					}
+
+				});
+				tabla.setVisible(true);
+				tabla_seleccion.setVisible(true);
+				scroll_seleccion.setViewportView(tabla_seleccion);
+				scroll_productos.setViewportView(tabla);
+
+
+				scroll_seleccion.repaint();
+				scroll_productos.repaint();
+				repaint();
+				//listaProductos.toString();
+				//				list.setModel(modelx);
+				//				scrollPane.setVisible(true);
+				allow = false;
+			}
+		});
 		GridBagConstraints gbc_busquedaField = new GridBagConstraints();
 		gbc_busquedaField.insets = new Insets(0, 0, 5, 5);
 		gbc_busquedaField.fill = GridBagConstraints.HORIZONTAL;
@@ -129,7 +194,7 @@ public class PanelResurtido extends JPanel {
 		gbc_scroll_productos.gridy = 2;
 		add(scroll_productos, gbc_scroll_productos);
 
-		tablaProductos = new JTable(modeloTabla);
+		//tablaProductos = new JTable(modeloTabla);
 		scroll_productos.setViewportView(tabla);
 
 		JLabel lblPrecio = new JLabel("Precio");
@@ -167,8 +232,57 @@ public class PanelResurtido extends JPanel {
 		btnAgregarAlCarrito = new JButton("Agregar al carrito");
 		btnAgregarAlCarrito.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(Integer.parseInt(sp_cantidad.getValue().toString()) != 0) {
+				if(Integer.parseInt(sp_cantidad.getValue().toString()) != 0 
+						&& Double.parseDouble(sp_precio.getValue().toString()) != 0 && jdatechooser.getDate() != null) {
+					if(allow) {
+						allow = false;
+						Producto producto = listaProductos.get(selectedRow);
+						int cantidad = Integer.parseInt(sp_cantidad.getValue().toString());
+						double precio = Double.parseDouble(sp_precio.getValue().toString());
+						DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+						Date date = new Date();
+						date = jdatechooser.getDate();
+						listaSeleccion.add(new Seleccion(producto, cantidad, precio, date));
+						if(!(listaProductos.isEmpty())) {
+							listaProductos.remove(selectedRow);
+						}
+						//listaProductos.remove(selectedRow);
+						//scroll_seleccion.removeAll();
+						//scroll_productos.removeAll();
+						scroll_productos.remove(tabla);
+						scroll_seleccion.remove(tabla_seleccion);
+						modeloSeleccion = new ModeloSeleccion(listaSeleccion);
+						modeloTabla = new ModeloTabla(listaProductos);
+						tabla = new JTable(modeloTabla);
+						tabla_seleccion = new JTable(modeloSeleccion);
+						ListSelectionModel model = tabla.getSelectionModel();
+						model.addListSelectionListener(new ListSelectionListener() {
+							@Override
+							public void valueChanged(ListSelectionEvent e) {
+								if(! model.isSelectionEmpty()) {
+									selectedRow = model.getMinSelectionIndex();
+									allow = true;
+									//OptionPane.showMessageDialog(null, listaProductos.get(selectedRow));
+								}
 
+							}
+
+						});
+						tabla.setVisible(true);
+						tabla_seleccion.setVisible(true);
+						scroll_seleccion.setViewportView(tabla_seleccion);
+						scroll_productos.setViewportView(tabla);
+
+						sp_cantidad.setValue(0);
+						sp_precio.setValue(0);
+						jdatechooser.cleanup();
+						scroll_seleccion.repaint();
+						scroll_productos.repaint();
+						repaint();
+
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Uno de los campos permanecen sin llenar");
 				}
 			}
 		});
@@ -177,6 +291,16 @@ public class PanelResurtido extends JPanel {
 		gbc_btnAgregarAlCarrito.gridx = 0;
 		gbc_btnAgregarAlCarrito.gridy = 5;
 		add(btnAgregarAlCarrito, gbc_btnAgregarAlCarrito);
+
+
+		jdatechooser = new JDateChooser();
+		jdatechooser.setDateFormatString("yyyy-MM-dd");
+		GridBagConstraints gbc_textField = new GridBagConstraints();
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.gridx = 1;
+		gbc_textField.gridy = 5;
+		add(jdatechooser, gbc_textField);
+		//jdatechooser.setColumns(10);
 
 	}
 	public void agregarCarrito() {
@@ -194,22 +318,27 @@ public class PanelResurtido extends JPanel {
 		private final String[] ENCABEZADOS = { "Codigo de Barras", "Nombre", "Marca", "Presentacion", "Cantidad",
 				"Contenido", "Unidad de medida", "Categoria", "Precio de venta", "Descripcion", "Stock maximo",
 		"Stock minimo" };
-
+		private int size;
+		
 		public ModeloTabla(List<Producto> listaProductos) {
+			size = listaProductos.size();
 			productos = new Object[listaProductos.size()][12];
-			for (int i = 0; i < listaProductos.size(); i++) {
-				productos[i][0] = listaProductos.get(i).getCodigoBarras();
-				productos[i][1] = listaProductos.get(i).getNombre();
-				productos[i][2] = listaProductos.get(i).getMarca();
-				productos[i][3] = listaProductos.get(i).getPresentacion();
-				productos[i][4] = listaProductos.get(i).getCantidad();
-				productos[i][5] = listaProductos.get(i).getContenido();
-				productos[i][6] = listaProductos.get(i).getUnidadMedida();
-				productos[i][7] = listaProductos.get(i).getCategoria();
-				productos[i][8] = listaProductos.get(i).getPrecioVenta();
-				productos[i][9] = listaProductos.get(i).getDescripcion();
-				productos[i][10] = listaProductos.get(i).getStockMaximo();
-				productos[i][11] = listaProductos.get(i).getStockMinimo();
+			if(listaProductos.size() != 0) {
+				for (int i = 0; i < listaProductos.size(); i++) {
+					//System.out.println(listaProductos.get(i).toString());
+					productos[i][0] = listaProductos.get(i).getCodigoBarras();
+					productos[i][1] = listaProductos.get(i).getNombre();
+					productos[i][2] = listaProductos.get(i).getMarca();
+					productos[i][3] = listaProductos.get(i).getPresentacion();
+					productos[i][4] = listaProductos.get(i).getCantidad();
+					productos[i][5] = listaProductos.get(i).getContenido();
+					productos[i][6] = listaProductos.get(i).getUnidadMedida();
+					productos[i][7] = listaProductos.get(i).getCategoria();
+					productos[i][8] = listaProductos.get(i).getPrecioVenta();
+					productos[i][9] = listaProductos.get(i).getDescripcion();
+					productos[i][10] = listaProductos.get(i).getStockMaximo();
+					productos[i][11] = listaProductos.get(i).getStockMinimo();
+				}
 			}
 		}
 
@@ -220,12 +349,51 @@ public class PanelResurtido extends JPanel {
 
 		@Override
 		public int getRowCount() {
-			return totalProductos;
+			return this.size;
 		}
 
 		@Override
 		public int getColumnCount() {
 			return 12;
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			return productos[rowIndex][columnIndex];
+		}
+
+	}
+	private class ModeloSeleccion extends AbstractTableModel {
+
+		private Object[][] productos;
+		private final String[] ENCABEZADOS = {"Codigo de Barras", "Cantidad", "Precio", "Caducidad"};
+		private int size;
+		public ModeloSeleccion(List<Seleccion> listaSeleccion) {
+			productos = new Object[listaSeleccion.size()][4];
+			size = listaSeleccion.size();
+			if(listaSeleccion.size() != 0) {
+				for (int i = 0; i < listaSeleccion.size(); i++) {
+					productos[i][0] = listaSeleccion.get(i).getProducto().getCodigoBarras();
+					productos[i][1] = listaSeleccion.get(i).getCantidad();
+					productos[i][2] = listaSeleccion.get(i).getPrecio();
+					productos[i][3] = listaSeleccion.get(i).getDate().toString();
+				}
+			}
+		}
+
+		@Override
+		public String getColumnName(int columnIndex) {
+			return ENCABEZADOS[columnIndex];
+		}
+
+		@Override
+		public int getRowCount() {
+			return this.size;
+		}
+
+		@Override
+		public int getColumnCount() {
+			return ENCABEZADOS.length;
 		}
 
 		@Override
