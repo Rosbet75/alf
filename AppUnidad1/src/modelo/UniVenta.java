@@ -1,15 +1,13 @@
 package modelo;
 
-import java.time.LocalDate;
+import java.io.Serializable;
 
-public class UniVenta {
+public class UniVenta implements Serializable{
 	private String codigoBarra;
 	private int cantidad;
-	private float precio;
-	private LocalDate fechaCad;
-	public UniVenta(String codigoBarra, float precio) {
+	private double precio;
+	public UniVenta(String codigoBarra, int cantidad, double precio) {
 		super();
-		this.fechaCad = LocalDate.now();
 		this.codigoBarra = codigoBarra;
 		this.precio = precio;
 	}
@@ -19,13 +17,13 @@ public class UniVenta {
 	public void setCodigoBarra(String codigoBarra) {
 		this.codigoBarra = codigoBarra;
 	}
-	public float getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 	public void setPrecio(float precio) {
 		this.precio = precio;
 	}
-	public float getPrecioTotal() {
+	public double getPrecioTotal() {
 		return precio * cantidad;
 	}
 	public int getCantidad() {
@@ -33,12 +31,6 @@ public class UniVenta {
 	}
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
-	}
-	public LocalDate getFechaCad() {
-		return fechaCad;
-	}
-	public void setFechaCad(LocalDate fechaCad) {
-		this.fechaCad = fechaCad;
 	}
 	
 }

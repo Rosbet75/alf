@@ -1,21 +1,21 @@
 package modelo;
 
-import java.time.LocalDate;
+import java.io.Serializable;
 import java.util.Date;
 
-public class RenglonResurtido {
+public class RenglonResurtido implements Serializable {
 	private String codigoBarra;
 	private int cantidad;
-	private float precio;
-	private LocalDate fechaCad;
+	private double precio;
+	private Date fechaCad;
 	
 	
-	public RenglonResurtido(String codigoBarra, int cantidad, float precio) {
+	public RenglonResurtido(String codigoBarra, int cantidad, double precio, Date date) {
 		super();
 		this.codigoBarra = codigoBarra;
 		this.cantidad = cantidad;
 		this.precio = precio;
-		this.fechaCad = LocalDate.now();
+		this.fechaCad = date;
 	}
 	public String getCodigoBarra() {
 		return codigoBarra;
@@ -29,20 +29,20 @@ public class RenglonResurtido {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-	public float getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 	public void setPrecio(float precio) {
 		this.precio = precio;
 	}
 	
-	public float getPrecioTotal() {
+	public double getPrecioTotal() {
 		return precio * cantidad;
 	}
-	public LocalDate getFechaCad() {
+	public Date getFechaCad() {
 		return fechaCad;
 	}
-	public void setFechaCad(LocalDate fechaCad) {
+	public void setFechaCad(Date fechaCad) {
 		this.fechaCad = fechaCad;
 	}
 	

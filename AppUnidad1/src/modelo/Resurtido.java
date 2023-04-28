@@ -1,25 +1,23 @@
 package modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class Resurtido {
+public class Resurtido implements Serializable{
 	private static int gen = 0;
 	private int folio;
 	private ArrayList<RenglonResurtido> articulos;
 	private LocalDate fecha;
-	private String proveedor;
 	public Resurtido() {
 		
 	}
-	public Resurtido(ArrayList<RenglonResurtido> articulos, String proveedor) {
+	public Resurtido(ArrayList<RenglonResurtido> articulos) {
 		super();
 		this.folio = gen;
 		count();
 		this.articulos = articulos;
 		this.fecha = LocalDate.now();
-		this.proveedor = proveedor;
 	}
 	private static void count() {
 		//usado para generar folios
@@ -49,12 +47,6 @@ public class Resurtido {
 	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
-	public String getProveedor() {
-		return proveedor;
-	}
-	public void setProveedor(String proveedor) {
-		this.proveedor = proveedor;
-	}
 	public float getTotal() {
 		//retorna el total de todo el resurtido
 		float total = 0;
@@ -63,4 +55,9 @@ public class Resurtido {
 		}
 		return total;
 	}
+	@Override
+	public String toString() {
+		return "Resurtido [folio=" + folio + ", articulos=" + articulos + ", fecha=" + fecha + "]";
+	}
+	
 }

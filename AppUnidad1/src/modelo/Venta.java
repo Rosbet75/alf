@@ -1,10 +1,10 @@
 package modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
-public class Venta {
+public class Venta implements Serializable{
 	private static int gen = 0;
 	private int folio;
 	private ArrayList<UniVenta> lista;
@@ -12,7 +12,7 @@ public class Venta {
 	public Venta() {
 		
 	}
-	public Venta(int folio, ArrayList<UniVenta> lista, Date fecha) {
+	public Venta(ArrayList<UniVenta> lista) {
 		super();
 		this.folio = gen;
 		count();
@@ -62,6 +62,10 @@ public class Venta {
 			total += uni.getPrecioTotal();
 		}
 		return total;
+	}
+	@Override
+	public String toString() {
+		return "Venta [folio=" + folio + ", lista=" + lista + ", fecha=" + fecha + "]";
 	}
 	
 }

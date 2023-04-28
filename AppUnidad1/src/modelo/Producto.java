@@ -1,7 +1,9 @@
 package modelo;
 
+import java.io.Serializable;
+
 // Representa un producto y nada mas
-public class Producto {
+public class Producto implements Serializable{
 
 	private String codigoBarras;
 	private String nombre;

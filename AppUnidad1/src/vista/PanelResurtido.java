@@ -66,17 +66,16 @@ public class PanelResurtido extends JPanel {
 		this.totalProductos = lista.size();
 		this.listaSeleccion = new ArrayList<>();
 		this.modeloTabla = new ModeloTabla(this.listaProductos);
-		this.listaSeleccion.add(new Seleccion(new Producto("1","asdf","adsfasdf", "asdfdsa",13, "asdfafe","adsfasdf","adsfasdf",34.55,"asdfeasdf",3434,2455555), 1, 1, new Date()));
+		//this.listaSeleccion.add(new Seleccion(new Producto("1","asdf","adsfasdf", "asdfdsa",13, "asdfafe","adsfasdf","adsfasdf",34.55,"asdfeasdf",3434,2455555), 1, 1, new Date()));
 		List<Producto> origen = new ArrayList<Producto>();
 		origen.addAll(listaProductos);
 		origen.toString();
-		if(!listaSeleccion.isEmpty()) {
-			this.modeloSeleccion = new ModeloSeleccion(this.listaSeleccion);
-		}
+		this.modeloSeleccion = new ModeloSeleccion(this.listaSeleccion);
+		
 		this.tabla = new JTable(modeloTabla);
-		if (!listaSeleccion.isEmpty()) {
-			this.tabla_seleccion = new JTable(modeloSeleccion);
-		}
+		
+		this.tabla_seleccion = new JTable(modeloSeleccion);
+		
 		ListSelectionModel model = tabla.getSelectionModel();
 		model.addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -113,6 +112,12 @@ public class PanelResurtido extends JPanel {
 			}
 		});
 		busquedaField.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+				if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+					e.consume();  // ignore event
+				}
+			}
 			@Override
 			public void keyReleased(KeyEvent e) {
 				String filter = busquedaField.getText().trim();
@@ -280,6 +285,8 @@ public class PanelResurtido extends JPanel {
 						scroll_productos.repaint();
 						repaint();
 
+					} else {
+						JOptionPane.showMessageDialog(null, "Porfavor selecciona un producto de la lista de productos");
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Uno de los campos permanecen sin llenar");
@@ -308,8 +315,13 @@ public class PanelResurtido extends JPanel {
 
 	}
 	public Resurtido getResurtido() {
+		ArrayList<RenglonResurtido> articulos = new ArrayList<RenglonResurtido>();
+		
+		for(Seleccion seleccion: listaSeleccion) {
+			articulos.add(new RenglonResurtido(seleccion.getProducto().getCodigoBarras(), seleccion.getCantidad(), seleccion.getPrecio(), seleccion.getDate()));
+		}
 
-		return null;
+		return new Resurtido(articulos);
 
 	}
 	private class ModeloTabla extends AbstractTableModel {
@@ -393,7 +405,7 @@ public class PanelResurtido extends JPanel {
 
 		@Override
 		public int getColumnCount() {
-			return ENCABEZADOS.length;
+			return 4;
 		}
 
 		@Override
@@ -402,6 +414,7 @@ public class PanelResurtido extends JPanel {
 		}
 
 	}
+	
 
 
 

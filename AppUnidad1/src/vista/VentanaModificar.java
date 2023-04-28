@@ -314,14 +314,14 @@ public class VentanaModificar extends JPanel {
 			}
 		}
 		for(int i = 0; i<cb_marca.getItemCount(); i++) {
-			if(producto.getCategoria().equals(cb_marca.getItemAt(i))) {
+			if(producto.getMarca().equals(cb_marca.getItemAt(i))) {
 				cb_marca.setSelectedIndex(i);
 				break;
 			}
 		}
 		sp_precioVenta.setValue((producto.getPrecioVenta()));
 		for(int i = 0; i<cb_presentacion.getItemCount(); i++) {
-			if(producto.getCategoria().equals(cb_presentacion.getItemAt(i))) {
+			if(producto.getPresentacion().equals(cb_presentacion.getItemAt(i))) {
 				cb_presentacion.setSelectedIndex(i);
 				break;
 			}
@@ -329,10 +329,10 @@ public class VentanaModificar extends JPanel {
 		txt_descripcion.setText(producto.getDescripcion());
 		sp_stockMax.setValue(producto.getStockMaximo());
 		sp_stockMin.setValue(producto.getStockMinimo());
-		sp_contenido.setValue(producto.getContenido());
-		sp_cantidad.setValue(producto.getCantidad());
+		sp_contenido.setValue(Integer.valueOf(producto.getContenido()));
+		sp_cantidad.setValue(Integer.valueOf(producto.getCantidad()));
 		for(int i = 0; i<cb_unidadMedida.getItemCount(); i++) {
-			if(producto.getCategoria().equals(cb_unidadMedida.getItemAt(i))) {
+			if(producto.getUnidadMedida().equals(cb_unidadMedida.getItemAt(i))) {
 				cb_unidadMedida.setSelectedIndex(i);
 				break;
 			}

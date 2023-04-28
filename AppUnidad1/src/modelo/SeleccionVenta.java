@@ -1,20 +1,19 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SeleccionVenta {
+public class SeleccionVenta implements Serializable{
 	private Producto producto;
 	private int cantidad;
 	private int precio;
 	private Date date;
 	
 	
-	public SeleccionVenta(Producto producto, int cantidad, int precio, Date date) {
+	public SeleccionVenta(Producto producto, int cantidad) {
 		super();
 		this.producto = producto;
 		this.cantidad = cantidad;
-		this.precio = precio;
-		this.date = date;
 	}
 	public Producto getProducto() {
 		return producto;

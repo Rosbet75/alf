@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import dao.IODataFile;
 import modelo.Producto;
 import modelo.Resurtido;
 import modelo.Venta;
@@ -92,7 +93,14 @@ public class VentanaPrincipal extends JFrame {
 		listaVenta.add(new Venta());
 		listaVenta.add(new Venta());
 		listaVenta.add(new Venta());
-
+		addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent e) {
+            	IODataFile.writeObjectToFile("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/listaProductos.dat",(Object) listaProductos);
+            	IODataFile.writeObjectToFile("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/listaResurtido.dat",(Object) listaResurtido);
+            	IODataFile.writeObjectToFile("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/listaVenta.dat", (Object) listaVenta);
+                System.exit(0);
+            }
+        });
 		setTitle("App GUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(MAXIMIZED_BOTH);
@@ -163,6 +171,26 @@ public class VentanaPrincipal extends JFrame {
 						panelEncabezado = new PanelEncabezado("Resurtir Productos", "El producto se sumara al inventario");
 						panelResurtido = new PanelResurtido(listaProductos);
 						panelOpciones = new PanelOpciones();
+						JButton aceptar = panelOpciones.getBotonAceptar();
+						aceptar.addActionListener(d->{
+							Resurtido resurtido = panelResurtido.getResurtido();
+							listaResurtido.add(resurtido);
+							contentPane.remove(panelEncabezado);
+							contentPane.remove(panelResurtido);
+							contentPane.remove(panelOpciones);
+							contentPane.repaint();
+							repaint();
+							
+						});
+						JButton cancelar = panelOpciones.getBotonCancelar();
+						cancelar.addActionListener( k -> {
+							contentPane.remove(panelEncabezado);
+							contentPane.remove(panelResurtido);
+							contentPane.remove(panelOpciones);
+							contentPane.repaint();
+							repaint();
+						});
+						panelOpciones.getBotonContinuar().setVisible(false);
 
 						contentPane.add(panelEncabezado, BorderLayout.NORTH);
 						contentPane.add(panelResurtido, BorderLayout.CENTER);
@@ -184,9 +212,29 @@ public class VentanaPrincipal extends JFrame {
 						contentPane.repaint();
 						repaint();
 						panelEncabezado = new PanelEncabezado("Vender Productos", "El producto se sumara al inventario");
-						panelVenta = new PanelVenta();
+						panelVenta = new PanelVenta(listaProductos);
 						panelOpciones = new PanelOpciones();
-
+						JButton aceptar = panelOpciones.getBotonAceptar();
+						aceptar.addActionListener(h -> {
+							Venta venta = panelVenta.getVenta();
+							System.out.println(venta.toString());
+							listaVenta.add(venta);
+							contentPane.remove(panelEncabezado);
+							contentPane.remove(panelVenta);
+							contentPane.remove(panelOpciones);
+							contentPane.repaint();
+							repaint();
+						});
+						JButton cancelar = panelOpciones.getBotonCancelar();
+						cancelar.addActionListener(k -> {
+							contentPane.remove(panelEncabezado);
+							contentPane.remove(panelVenta);
+							contentPane.remove(panelOpciones);
+							contentPane.repaint();
+							repaint();
+						});
+						panelOpciones.getBotonContinuar().setVisible(false);
+						
 						contentPane.add(panelEncabezado, BorderLayout.NORTH);
 						contentPane.add(panelVenta, BorderLayout.CENTER);
 						contentPane.add(panelOpciones, BorderLayout.SOUTH);
