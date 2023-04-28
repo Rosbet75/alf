@@ -1,5 +1,7 @@
 package vista;
 
+import static utilidades.UtilityDB.getDatabaseParameters;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -23,9 +25,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import dao.IODataFile;
+import modelo.BaseDatos;
 import modelo.Producto;
 import modelo.Resurtido;
 import modelo.Venta;
+import registros.DBRecord;
 
 // TODO anadir flags para evitar poner un panel sobre otro
 // TODO reacomodar los atributos de esta clase
@@ -60,6 +64,10 @@ public class VentanaPrincipal extends JFrame {
 	private PanelVenta panelVenta;
 	private VentanaConsulta panelConsultar;
 	private VentanaModificar panelModificar;
+	private List<Producto> listaProductos;
+	private List<Resurtido> listaResurtido;
+	private List<Venta> listaVenta;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -78,26 +86,70 @@ public class VentanaPrincipal extends JFrame {
 		//cambiarApariencia("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
 		// TODO no hacer esto
-		List<Producto> listaProductos = new ArrayList<>();
+		this.listaProductos = new ArrayList<>();
 		//		listaProductos.add(new Producto());
 		//		listaProductos.add(new Producto());
 		//		listaProductos.add(new Producto());
-		listaProductos.add(new Producto("1","asdf","adsfasdf", "asdfdsa",13, "asdfafe","adsfasdf","adsfasdf",34.55,"asdfeasdf",3434,2455555));
+		//listaProductos.add(new Producto("2","asdf","adsfasdf", "asdfdsa",13, "asdfafe","adsfasdf","adsfasdf",34.55,"asdfeasdf",3434,2455555));
 
-		List<Resurtido> listaResurtido = new ArrayList<>();
-		listaResurtido.add(new Resurtido());
-		listaResurtido.add(new Resurtido());
-		listaResurtido.add(new Resurtido());
+		this.listaResurtido = new ArrayList<>();
+		//listaResurtido.add(new Resurtido());
+		//listaResurtido.add(new Resurtido());
+		//listaResurtido.add(new Resurtido());
 
-		List<Venta> listaVenta = new ArrayList<>();
-		listaVenta.add(new Venta());
-		listaVenta.add(new Venta());
-		listaVenta.add(new Venta());
+		this.listaVenta = new ArrayList<>();
+		//listaVenta.add(new Venta());
+		//listaVenta.add(new Venta());
+		//listaVenta.add(new Venta());
+		try {
+			listaProductos = (ArrayList<Producto>) IODataFile.readObjectFromFile("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/listaProductos.dat");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			System.out.println("productos");
+			e1.printStackTrace();
+		}
+    	try {
+			listaResurtido = (ArrayList<Resurtido>) IODataFile.readObjectFromFile("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/listaResurtido.dat");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			System.out.println("resurtido");
+			e1.printStackTrace();
+		}
+    	try {
+			listaVenta = (ArrayList<Venta>) IODataFile.readObjectFromFile("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/listaVenta.dat");
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			System.out.println("venta");
+			e1.printStackTrace();
+		}
+    	if(JOptionPane.showConfirmDialog(null, "Deseas cargar desde la base de datos?", null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+    		DBRecord rec = getDatabaseParameters();
+    		BaseDatos base = BaseDatos.newInstance(rec.Nombre_BD(), rec.usuario(), rec.password(), rec.protocolo(), rec.driver());
+    		System.out.println(base.isConnected());
+    	}
+    	int num = 0;
+    	for(Resurtido resurtido: listaResurtido) {
+    		if(resurtido.getFolio()>num) {
+    			num = resurtido.getFolio();
+    		}
+    	}
+    	Resurtido.setGen(num);
+    	num = 0;
+    	for(Venta venta: listaVenta) {
+    		if(venta.getFolio() > num) {
+    			num = venta.getFolio();
+    		}
+    	}
+    	Venta.setGen(num);
 		addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
+            	System.out.println("flag");
             	IODataFile.writeObjectToFile("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/listaProductos.dat",(Object) listaProductos);
             	IODataFile.writeObjectToFile("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/listaResurtido.dat",(Object) listaResurtido);
             	IODataFile.writeObjectToFile("/home/ozymandias/git/alf/AppUnidad1/src/recursos/files/listaVenta.dat", (Object) listaVenta);
+            	if(JOptionPane.showConfirmDialog(null, "Deseas guardar en la base de datos?", null, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            		
+            	}
                 System.exit(0);
             }
         });
@@ -265,7 +317,7 @@ public class VentanaPrincipal extends JFrame {
 								}
 							});
 							panelOpciones = new PanelOpciones();
-							var cancelar = panelOpciones.getBotonAceptar();
+							var cancelar = panelOpciones.getBotonCancelar();
 							cancelar.addActionListener(f -> {
 								contentPane.remove(panelEncabezado);
 								contentPane.remove(panelModificar);
@@ -273,7 +325,7 @@ public class VentanaPrincipal extends JFrame {
 								contentPane.repaint();
 								repaint();
 							});
-							var aceptar = panelOpciones.getBotonCancelar();
+							var aceptar = panelOpciones.getBotonAceptar();
 							aceptar.addActionListener(d -> {
 								String cod = panelModificar.getBusqueda().getText().trim();
 								for(int i = 0; i<listaProductos.size(); i++) {
